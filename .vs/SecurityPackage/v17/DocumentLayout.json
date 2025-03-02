@@ -1,9 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\All projects\\Temporary Folders\\Data Security project\\SecurityPackage-20250301T212411Z-001\\SecurityPackage\\",
+  "WorkspaceRootPath": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\data security project\\securitypackage-20250301t212411z-001\\securitypackage\\securitylibrary\\mainalgorithms\\railfence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\data security project on git\\milestone1\\securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\mainalgorithms\\railfence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\railfence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,8 +22,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Ceaser.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\Ceaser.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\Ceaser.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\Ceaser.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\Ceaser.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAAACAAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T23:48:34.646Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RailFence.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\RailFence.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\RailFence.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\RailFence.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\RailFence.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAAAAoAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T22:27:53.625Z",
+              "IsPinned": true
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -30,16 +65,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RailFence.cs",
-              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\Data Security project\\SecurityPackage-20250301T212411Z-001\\SecurityPackage\\securitylibrary\\MainAlgorithms\\RailFence.cs",
-              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\RailFence.cs",
-              "ToolTip": "D:\\All projects\\Temporary Folders\\Data Security project\\SecurityPackage-20250301T212411Z-001\\SecurityPackage\\securitylibrary\\MainAlgorithms\\RailFence.cs",
-              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\RailFence.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAoAAAA",
+              "DocumentIndex": 1,
+              "Title": "HillCipher.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\HillCipher.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\HillCipher.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\Data Security project on git\\milestone1\\securitylibrary\\MainAlgorithms\\HillCipher.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\HillCipher.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAAAA8AAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-01T22:27:53.625Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-02T21:28:05.536Z"
             }
           ]
         }

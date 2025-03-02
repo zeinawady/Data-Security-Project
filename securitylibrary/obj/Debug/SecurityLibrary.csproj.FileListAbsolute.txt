@@ -12,3 +12,9 @@ F:\GoogleDriveSync\Security 2018-2019\Staff\Labs\Lab 1\SecurityPackage\SecurityL
 F:\GoogleDriveSync\Security 2018-2019\Staff\Labs\Lab 1\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csprojResolveAssemblyReference.cache
 F:\GoogleDriveSync\Security 2018-2019\Staff\Labs\Lab 1\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 F:\GoogleDriveSync\Security 2018-2019\Staff\Labs\Lab 1\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
