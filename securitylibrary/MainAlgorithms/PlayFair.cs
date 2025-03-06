@@ -48,23 +48,13 @@ namespace SecurityLibrary
                 string dPair = "";
                 if (firstRow == secondRow) // the same row
                 {
-                    if (firstCol == 0)
-                        firstCol = 5;
-                    if (secondCol == 0)
-                        secondCol = 5;
-
-                    dPair += keyMatrix[firstRow, (firstCol - 1) % 5];
-                    dPair += keyMatrix[secondRow, (secondCol - 1) % 5];
+                    dPair += keyMatrix[firstRow, (firstCol + 4) % 5];
+                    dPair += keyMatrix[secondRow, (secondCol + 4) % 5];
                 }
                 else if (firstCol == secondCol) // the same column
                 {
-                    if (firstRow == 0)
-                        firstRow = 5;
-                    if (secondRow == 0)
-                        secondRow = 5;
-
-                    dPair += keyMatrix[(firstRow - 1) % 5, firstCol];
-                    dPair += keyMatrix[(secondRow - 1) % 5, secondCol];
+                    dPair += keyMatrix[(firstRow + 4) % 5, firstCol];
+                    dPair += keyMatrix[(secondRow + 4) % 5, secondCol];
                 }
                 else // rectangle
                 {
@@ -82,21 +72,21 @@ namespace SecurityLibrary
         {
             decryptedText = decryptedText.ToUpper().Replace("J", "I");
             string ct = decryptedText[0].ToString();
+            // remove x which in the last index
+            if (decryptedText.EndsWith("X") && decryptedText.Length % 2 == 0)
+            {
+                decryptedText = decryptedText.Remove(decryptedText.Length - 1);
+            }
             for (int i = 1; i < decryptedText.Length; i++)
             {
                 // remove x between the duplicated chars
-                if (decryptedText[i] == 'X' && decryptedText[i - 1] == decryptedText[i + 1] && i % 2 != 0)
+                if (i + 1 < decryptedText.Length && decryptedText[i] == 'X' && decryptedText[i - 1] == decryptedText[i + 1] && i % 2 != 0)
                 {
                     continue;
                 }
                 ct += decryptedText[i];
             }
-            // remove x which in the last index
-            if (ct.EndsWith("X") && ct.Length % 2 == 0)
-            {
-                ct = ct.Remove(ct.Length - 1);
-            }
-
+            
             return ct;
         }
 
