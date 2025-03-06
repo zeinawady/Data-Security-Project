@@ -44,6 +44,28 @@ namespace SecurityLibrary
         }
 
 
+        public int GetbValue(int determinant)
+        {
+            while (determinant < 0) { determinant += 26; }
+            determinant %= 26;
+
+            // If the determinant is 0, it has no inverse
+            if (determinant == 0)
+            {
+                return -1;
+            }
+
+            for (int bvalue = 1; bvalue < 26; bvalue++)
+            {
+                if ((bvalue * determinant) % 26 == 1)
+                {
+                    return bvalue;
+                }
+            }
+
+            return -1; // Indicates that there is no bValue found
+        }
+
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
