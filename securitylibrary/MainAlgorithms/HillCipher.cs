@@ -391,8 +391,44 @@ namespace SecurityLibrary
 
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
+            // c=pk => k =cp^-1
+            // Get det(plain) => Get bValue (det(plain))
+            // Get the inverse of plain
+            // multiply cipher * plain inverse 
+
+            //Validating the passed matrices size
+            if (plainText.Count != 9 || cipherText.Count != 9)
+            {
+                throw new Exception("Can't get the key. Wrong size matrices");
+            }
+
+            //Validating the passed letter values
+            for (int i = 0; i < cipherText.Count; i++)
+            {
+                if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Cipher text");
+                }
+            }
+
+            for (int i = 0; i < plainText.Count; i++)
+            {
+                if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Plain text");
+                }
+            }
+
+            int determinant3 = getDeterminant(plainText);
+            int bvalue = GetbValue(determinant3);
+
+            List<int> plainInverse = Inverse3by3(plainText, bvalue);
+            List<int> key3by3 = Multiply3by3(cipherText, plainInverse);
+
+            return key3by3;
+            //throw new NotImplementedException();
         }
+
 
     }
 }
