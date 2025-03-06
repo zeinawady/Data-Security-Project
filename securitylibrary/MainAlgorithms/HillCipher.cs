@@ -44,6 +44,17 @@ namespace SecurityLibrary
         }
 
 
+        public int GCD(int determinant, int modulo)
+        {
+            while (modulo != 0)
+            {
+                int temp = modulo;
+                modulo = determinant % modulo;
+                determinant = temp;
+            }
+            return determinant;
+        }
+
         public int GetbValue(int determinant)
         {
             while (determinant < 0) { determinant += 26; }
@@ -262,55 +273,33 @@ namespace SecurityLibrary
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
-
-            /* if (plainText.Count() != 4 || cipherText.Count() != 4)
-             {
-                 throw new Exception("Can't get the key. Wrong size matrices");
-             }
-             for (int i = 0; i < cipherText.Count(); i++)
-             {
-                 if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
-                 {
-                     throw new Exception("Invalid Cipher text");
-                 }
-             }
-
-             for (int i = 0; i < plainText.Count(); i++)
-             {
-                 if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
-                 {
-                     throw new Exception("Invalid Plain text");
-                 }
-             }*/
-
-            if (plainText.Count() == 4 && cipherText.Count() == 4)
+            for (int a = 0; a < 26; a++)
             {
-                for (int a = 0; a < 4; a++)
+                for (int b = 0; b < 26; b++)
                 {
-                    for (int b = 0; b < 4; b++)
+                    for (int c = 0; c < 26; c++)
                     {
-                        for (int c = 0; c < 4; c++)
+                        for (int d = 0; d < 26; d++)
                         {
-                            for (int d = 0; d < 4; d++)
+                            List<int> possibleKey = new List<int> { };
+                            possibleKey.Add(a);
+                            possibleKey.Add(b);
+                            possibleKey.Add(c);
+                            possibleKey.Add(d);
+                            int determinant = getDeterminant(possibleKey);
+                            int det_Mod_gcd = GCD(determinant, 26);
+                            if (det_Mod_gcd != 1 || determinant == 0) { continue; }
+
+                            List<int> possibleCipher = Encrypt(plainText, possibleKey);
+                            if (possibleCipher.SequenceEqual(cipherText))
                             {
-                                List<int> possibleKey = new List<int> { };
-                                possibleKey.Add(a);
-                                possibleKey.Add(b);
-                                possibleKey.Add(c);
-                                possibleKey.Add(d);
-
-                                List<int> possibleCipher = Encrypt(plainText, possibleKey);
-                                if (possibleCipher.SequenceEqual(cipherText))
-                                {
-                                    return possibleKey;
-                                }
-
+                                return possibleKey;
                             }
                         }
                     }
                 }
             }
-            throw new NotImplementedException();
+            throw new InvalidAnlysisException();
         }
 
 
@@ -376,24 +365,13 @@ namespace SecurityLibrary
                 }
             }
 
+            int determinant = getDeterminant(key); 
             //2*2 Encryption 
-            if (key.Count() == 4)
+            int gcd = GCD(determinant, 26);
+            if (gcd == 1 && determinant != 0)
             {
-                //validating the determinant
-                int determinant = getDeterminant(key);
-                if (determinant == 0 || determinant % 2 == 0 || determinant % 13 == 0)
+                if (key.Count() == 4)
                 {
-                    throw new Exception("Wrong key matrix");
-                }
-                else
-                {
-                    if (plainText.Count() % 2 != 0)
-                    {
-                        // Adding an x letter if the #letters is odd
-                        plainText.Add(23);
-                    }
-
-
                     List<int> Cipher2by2 = new List<int> { };
 
                     for (int i = 0; i < plainText.Count(); i += 2)
@@ -404,44 +382,29 @@ namespace SecurityLibrary
                         Cipher2by2.Add(secondElement);
                     }
                     return Cipher2by2;
-
                 }
 
-            }
-
-            //3*3 Encryption
-            else if (key.Count() == 9)
-            {
-                //Getting the determinant
-                int determinant3 = getDeterminant(key);
-                //validating the determinant
-                if (determinant3 == 0 || determinant3 % 2 == 0 || determinant3 % 13 == 0)
+                //3*3 Encryption
+                else 
                 {
-                    throw new Exception("Wrong key matrix");
+                    List<int> Cipher3by3 = new List<int> { };
+
+                    for (int i = 0; i < plainText.Count(); i += 3)
+                    {
+                        int firstElement = (key[0] * plainText[i] + key[1] * plainText[i + 1] + key[2] * plainText[i + 2]) % 26;
+                        int secondElement = (key[3] * plainText[i] + key[4] * plainText[i + 1] + key[5] * plainText[i + 2]) % 26;
+                        int thirdElement = (key[6] * plainText[i] + key[7] * plainText[i + 1] + key[8] * plainText[i + 2]) % 26;
+
+                        Cipher3by3.Add(firstElement);
+                        Cipher3by3.Add(secondElement);
+                        Cipher3by3.Add(thirdElement);
+
+                    }
+                    return Cipher3by3;
                 }
-                while (plainText.Count() % 3 != 0)
-                {
-                    plainText.Add(23);
-                }
-
-                List<int> Cipher3by3 = new List<int> { };
-
-                for (int i = 0; i < plainText.Count(); i += 3)
-                {
-                    int firstElement =  (key[0] * plainText[i] + key[1] * plainText[i + 1] + key[2] * plainText[i + 2]) % 26;
-                    int secondElement = (key[3] * plainText[i] + key[4] * plainText[i + 1] + key[5] * plainText[i + 2]) % 26;
-                    int thirdElement =  (key[6] * plainText[i] + key[7] * plainText[i + 1] + key[8] * plainText[i + 2]) % 26;
-
-                    Cipher3by3.Add(firstElement);
-                    Cipher3by3.Add(secondElement);
-                    Cipher3by3.Add(thirdElement);
-
-                }
-                return Cipher3by3;
             }
             else
                 throw new NotImplementedException();
-
         }
 
 
