@@ -263,53 +263,54 @@ namespace SecurityLibrary
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
 
-            if (plainText.Count() != 4 || cipherText.Count() != 4)
-            {
-                throw new Exception("Can't get the key. Wrong size matrices");
-            }
-            for (int i = 0; i < cipherText.Count(); i++)
-            {
-                if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
-                {
-                    throw new Exception("Invalid Cipher text");
-                }
-            }
+            /* if (plainText.Count() != 4 || cipherText.Count() != 4)
+             {
+                 throw new Exception("Can't get the key. Wrong size matrices");
+             }
+             for (int i = 0; i < cipherText.Count(); i++)
+             {
+                 if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
+                 {
+                     throw new Exception("Invalid Cipher text");
+                 }
+             }
 
-            for (int i = 0; i < plainText.Count(); i++)
+             for (int i = 0; i < plainText.Count(); i++)
+             {
+                 if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
+                 {
+                     throw new Exception("Invalid Plain text");
+                 }
+             }*/
+
+            if (plainText.Count() == 4 && cipherText.Count() == 4)
             {
-                if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
+                for (int a = 0; a < 4; a++)
                 {
-                    throw new Exception("Invalid Plain text");
-                }
-            }
-            
-            List<int> possibleKey = new List<int> { };
-            for (int a = 0; a < 4; a++)
-            {
-                for (int b = 0; b < 4; b++)
-                {
-                    for (int c = 0; c < 4; c++)
+                    for (int b = 0; b < 4; b++)
                     {
-                        for (int d = 0; d < 4; d++)
+                        for (int c = 0; c < 4; c++)
                         {
-                            possibleKey.Add(a);
-                            possibleKey.Add(b);
-                            possibleKey.Add(c);
-                            possibleKey.Add(d);
-
-                            List<int> possibleCipher = Encrypt(plainText, possibleKey);
-                            if (!possibleCipher.SequenceEqual(cipherText))
+                            for (int d = 0; d < 4; d++)
                             {
-                                continue;
+                                List<int> possibleKey = new List<int> { };
+                                possibleKey.Add(a);
+                                possibleKey.Add(b);
+                                possibleKey.Add(c);
+                                possibleKey.Add(d);
+
+                                List<int> possibleCipher = Encrypt(plainText, possibleKey);
+                                if (possibleCipher.SequenceEqual(cipherText))
+                                {
+                                    return possibleKey;
+                                }
+
                             }
-                            else
-                                return possibleKey;
                         }
                     }
                 }
             }
-            
-            throw new Exception("Couldn't find a key");
+            throw new NotImplementedException();
         }
 
 
@@ -317,15 +318,20 @@ namespace SecurityLibrary
         {
 
             //Validating the passed cipher text
-            for (int i = 0; i < cipherText.Count(); i++)
+            /*for (int i = 0; i < cipherText.Count(); i++)
             {
                 if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
                 {
                     throw new Exception("Invalid Cipher text");
                 }
-            }
+            }*/
 
             int determinant = getDeterminant(key);
+
+            if (determinant == 0)
+            {
+                throw new NotImplementedException();
+            }
 
             int bvalue = GetbValue(determinant);
 
@@ -341,11 +347,15 @@ namespace SecurityLibrary
                 case 9:
                     keyInverse = Inverse3by3(key, bvalue);
                     break;
-                default:
-                    throw new Exception("Can't decrypt the passed matrix");
+                
             }
             List<int> plain = listMultiplication(cipherText, keyInverse);
-            return plain;
+            List<int> cipher = new List<int> { };
+            cipher = Encrypt(plain, keyInverse);
+            if (!cipher.SequenceEqual(cipherText))
+                throw new NotImplementedException();
+            else
+                return plain;
 
             //throw new NotImplementedException();
         }
@@ -443,10 +453,10 @@ namespace SecurityLibrary
             // multiply cipher * plain inverse 
 
             //Validating the passed matrices size
-            if (plainText.Count != 9 || cipherText.Count != 9)
+            /*if (plainText.Count != 9 || cipherText.Count != 9)
             {
                 throw new Exception("Can't get the key. Wrong size matrices");
-            }
+            }*/
 
             //Validating the passed letter values
             for (int i = 0; i < cipherText.Count; i++)
