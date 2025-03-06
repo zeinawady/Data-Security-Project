@@ -182,6 +182,63 @@ namespace SecurityLibrary
         }
 
 
+        public List<int> Multiply3by3(List<int> matrix1, List<int> matrix2)
+        {
+            /*                k0   k1  k2                           j0   j1  j2
+             * matrix1 =   i0 [A   B   C]      =>      matrix2=  k0 [A   B   C]       
+             *             i1 [D   E   F]                        k1 [D   E   F]
+             *             i2 [G   H   I]                        k2 [G   H   I]
+             *     
+             * First layer = (A[i0][K0]*B[K0][j0]) + (A[i0][K1]*B[K0][j1]) + (A[i0][K2]*B[K0][j2]) 
+             */
+
+            if (matrix1.Count != 9 || matrix2.Count != 9)
+            {
+                throw new Exception("Wrong matrices size to be multiplied. Size must be 3*3");
+            }
+
+            int[,] mat1 = new int[3, 3];
+            int[,] mat2 = new int[3, 3];
+            int element = 0;
+            int[,] multiply3by3 = new int[3, 3];
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    mat1[i, j] = matrix1[element];
+                    mat2[i, j] = matrix2[element];
+                    multiply3by3[i, j] = 0;
+                    element++;
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)  // 'j' should come before 'k'
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        multiply3by3[i, j] += mat1[i, k] * mat2[k, j];
+                    }
+                    multiply3by3[i, j] = (multiply3by3[i, j] % 26 + 26) % 26;  // Apply modulo inside loop
+                }
+            }
+            List<int> resultList = new List<int> { };
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    resultList.Add(multiply3by3[i, j]);
+                }
+            }
+            for (int i = 0; i < 9; i++)
+            {
+                resultList[i] = ((resultList[i] % 26) + 26) % 26;  // Ensures non-negative values in one step
+            }
+
+            return resultList;
+        }
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();
