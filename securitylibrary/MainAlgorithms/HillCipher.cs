@@ -9,7 +9,7 @@ namespace SecurityLibrary
     /// <summary>
     /// The List<int> is row based. Which means that the key is given in row based manner.
     /// </summary>
-    public class HillCipher :  ICryptographicTechnique<List<int>, List<int>>
+    public class HillCipher : ICryptographicTechnique<List<int>, List<int>>
     {
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {

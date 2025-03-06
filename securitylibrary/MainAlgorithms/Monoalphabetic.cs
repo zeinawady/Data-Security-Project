@@ -14,15 +14,15 @@ namespace SecurityLibrary
             cipherText = cipherText.ToLower();
             string Alpha = "abcdefghijklmnopqrstuvwxyz";
             var map = new Dictionary<char, char>(); 
-            // add letter to map without repeate
+            // Add letters to map without repeate
             for (int i = 0; i < plainText.Length; i++)
             {               
-                    if (!map.ContainsKey(plainText[i]) && !map.ContainsValue(cipherText[i]))
+                    if (!map.ContainsKey(plainText[i]))
                     {
                         map.Add(plainText[i], cipherText[i]);
                     }       
             }
-
+            //  letters missing
             string missingalpha = "";
             string missingcipher = "";
             for (int i = 0; i < 26; i++)
@@ -56,24 +56,23 @@ namespace SecurityLibrary
             //throw new NotImplementedException();
             cipherText = cipherText.ToLower();
             string Alpha = "abcdefghijklmnopqrstuvwxyz";
-            char[] dec = new char[cipherText.Length];
+            string dec = "";
             for (int i = 0; i < cipherText.Length; i++)
             {
-                dec[i] = Alpha[key.IndexOf(cipherText[i])];
+                dec += Alpha[key.IndexOf(cipherText[i])];
             }
-            return new string(dec);
+            return dec;
         }
 
         public string Encrypt(string plainText, string key)
         {
             //throw new NotImplementedException();
-            char[] enc = new char[plainText.Length];
+            string enc = "" ;
             for (int i = 0; i < plainText.Length; i++)
             {
-                int character = plainText[i];
-                enc[i] = key[character - 97];
+                enc += key[plainText[i] - 'a'];
             }
-            return new string(enc).ToUpper();
+            return enc.ToUpper();
         }
 
         /// <summary>
