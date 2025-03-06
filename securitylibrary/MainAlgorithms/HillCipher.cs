@@ -278,17 +278,18 @@ namespace SecurityLibrary
                             possibleKey.Add(d);
 
                             List<int> possibleCipher = Encrypt(plainText, possibleKey);
-                            if (possibleCipher.SequenceEqual(cipherText))
+                            if (!possibleCipher.SequenceEqual(cipherText))
                             {
-                                break;
+                                continue;
                             }
-                            else continue;
+                            else
+                                return possibleKey;
                         }
                     }
                 }
             }
-            return possibleKey;
-            // throw new Exception("Couldn't find a key");
+            
+            throw new Exception("Couldn't find a key");
         }
 
 
@@ -299,10 +300,12 @@ namespace SecurityLibrary
         }
 
 
+        
+
         public List<int> Encrypt(List<int> plainText, List<int> key)
         {
 
-
+            
             //Validating the passed text
             for (int i = 0; i < plainText.Count(); i++)
             {
@@ -316,8 +319,7 @@ namespace SecurityLibrary
             if (key.Count() == 4)
             {
                 //validating the determinant
-                int determinant;
-                determinant = key.ElementAt(0) * key.ElementAt(3) - key.ElementAt(1) * key.ElementAt(2);
+                int determinant = getDeterminant(key);
                 if (determinant == 0 || determinant % 2 == 0 || determinant % 13 == 0)
                 {
                     throw new Exception("Wrong key matrix");
@@ -327,7 +329,7 @@ namespace SecurityLibrary
                     if (plainText.Count() % 2 != 0)
                     {
                         // Adding an x letter if the #letters is odd
-                        plainText.Add(25);
+                        plainText.Add(23);
                     }
 
 
@@ -350,12 +352,7 @@ namespace SecurityLibrary
             else if (key.Count() == 9)
             {
                 //Getting the determinant
-                int determinant3 = (key.ElementAt(0) * key.ElementAt(4) * key.ElementAt(8)) +
-                                   (key.ElementAt(1) * key.ElementAt(5) * key.ElementAt(6)) +
-                                   (key.ElementAt(2) * key.ElementAt(3) * key.ElementAt(7)) -
-                                   (key.ElementAt(6) * key.ElementAt(4) * key.ElementAt(2)) -
-                                   (key.ElementAt(7) * key.ElementAt(5) * key.ElementAt(0)) -
-                                   (key.ElementAt(8) * key.ElementAt(3) * key.ElementAt(1));
+                int determinant3 = getDeterminant(key);
                 //validating the determinant
                 if (determinant3 == 0 || determinant3 % 2 == 0 || determinant3 % 13 == 0)
                 {
@@ -363,18 +360,16 @@ namespace SecurityLibrary
                 }
                 while (plainText.Count() % 3 != 0)
                 {
-                    plainText.Add(25);
+                    plainText.Add(23);
                 }
-
-
 
                 List<int> Cipher3by3 = new List<int> { };
 
                 for (int i = 0; i < plainText.Count(); i += 3)
                 {
-                    int firstElement = (key.ElementAt(0) * plainText.ElementAt(i) + key.ElementAt(1) * plainText.ElementAt(i + 1) + key.ElementAt(2) * plainText.ElementAt(i + 2)) % 26;
-                    int secondElement = (key.ElementAt(3) * plainText.ElementAt(i) + key.ElementAt(4) * plainText.ElementAt(i + 1) + key.ElementAt(5) * plainText.ElementAt(i + 2)) % 26;
-                    int thirdElement = (key.ElementAt(6) * plainText.ElementAt(i) + key.ElementAt(7) * plainText.ElementAt(i + 1) + key.ElementAt(8) * plainText.ElementAt(i + 2)) % 26;
+                    int firstElement =  (key[0] * plainText[i] + key[1] * plainText[i + 1] + key[2] * plainText[i + 2]) % 26;
+                    int secondElement = (key[3] * plainText[i] + key[4] * plainText[i + 1] + key[5] * plainText[i + 2]) % 26;
+                    int thirdElement =  (key[6] * plainText[i] + key[7] * plainText[i + 1] + key[8] * plainText[i + 2]) % 26;
 
                     Cipher3by3.Add(firstElement);
                     Cipher3by3.Add(secondElement);
