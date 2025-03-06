@@ -240,6 +240,26 @@ namespace SecurityLibrary
         }
 
 
+        List<int> listMultiplication(List<int> text, List<int> key)
+        {
+            List<int> res = new List<int>();
+            int n = key.Count();
+            n = (int)Math.Sqrt(n);
+            for (int i = 0; i < text.Count(); i += n)
+            {
+                for (int j = 0; j < key.Count(); j += n)
+                {
+                    int x = 0;
+                    for (int k = 0; k < n; k++)
+                    {
+                        x += key[j + k] * text[i + k];
+                    }
+                    res.Add(x % 26);
+                }
+            }
+            return res;
+        }
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
 
@@ -296,7 +316,38 @@ namespace SecurityLibrary
         public List<int> Decrypt(List<int> cipherText, List<int> key)
         {
 
-            throw new NotImplementedException();
+            //Validating the passed cipher text
+            for (int i = 0; i < cipherText.Count(); i++)
+            {
+                if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Cipher text");
+                }
+            }
+
+            int determinant = getDeterminant(key);
+
+            int bvalue = GetbValue(determinant);
+
+            List<int> keyInverse = new List<int> { };
+
+            int size = key.Count;
+
+            switch (size)
+            {
+                case 4:
+                    keyInverse = Inverse2by2(key, bvalue);
+                    break;
+                case 9:
+                    keyInverse = Inverse3by3(key, bvalue);
+                    break;
+                default:
+                    throw new Exception("Can't decrypt the passed matrix");
+            }
+            List<int> plain = listMultiplication(cipherText, keyInverse);
+            return plain;
+
+            //throw new NotImplementedException();
         }
 
 
@@ -423,7 +474,5 @@ namespace SecurityLibrary
             return key3by3;
             //throw new NotImplementedException();
         }
-
-
     }
 }
