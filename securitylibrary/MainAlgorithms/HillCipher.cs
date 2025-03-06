@@ -239,9 +239,56 @@ namespace SecurityLibrary
             return resultList;
         }
 
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
+
+            if (plainText.Count() != 4 || cipherText.Count() != 4)
+            {
+                throw new Exception("Can't get the key. Wrong size matrices");
+            }
+            for (int i = 0; i < cipherText.Count(); i++)
+            {
+                if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Cipher text");
+                }
+            }
+
+            for (int i = 0; i < plainText.Count(); i++)
+            {
+                if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Plain text");
+                }
+            }
+            
+            List<int> possibleKey = new List<int> { };
+            for (int a = 0; a < 4; a++)
+            {
+                for (int b = 0; b < 4; b++)
+                {
+                    for (int c = 0; c < 4; c++)
+                    {
+                        for (int d = 0; d < 4; d++)
+                        {
+                            possibleKey.Add(a);
+                            possibleKey.Add(b);
+                            possibleKey.Add(c);
+                            possibleKey.Add(d);
+
+                            List<int> possibleCipher = Encrypt(plainText, possibleKey);
+                            if (possibleCipher.SequenceEqual(cipherText))
+                            {
+                                break;
+                            }
+                            else continue;
+                        }
+                    }
+                }
+            }
+            return possibleKey;
+            // throw new Exception("Couldn't find a key");
         }
 
 
