@@ -170,6 +170,36 @@ namespace SecurityLibrary
         }
 
 
+        public List<int> Multiply2by2(List<int> matrix1, List<int> matrix2)
+        {
+            if (matrix1.Count() != 4 || matrix2.Count() != 4)
+            {
+                throw new Exception("Wrong matrices size to be multiplied. Size must be 2*2");
+            }
+
+            int A, B, C, D;
+            A = (matrix1[0] * matrix2[0]) + (matrix1[1] * matrix2[2]);
+            B = (matrix1[0] * matrix2[1]) + (matrix1[1] * matrix2[3]);
+
+            C = (matrix1[2] * matrix2[0]) + (matrix1[3] * matrix2[2]);
+            D = (matrix1[2] * matrix2[1]) + (matrix1[3] * matrix2[3]);
+
+            List<int> multiply2by2 = new List<int> { A, B, C, D };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (multiply2by2[i] < 0)
+                {
+                    multiply2by2[i] += 26;
+                }
+                multiply2by2[i] %= 26;
+            }
+
+            return multiply2by2;
+        }
+
+
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();
