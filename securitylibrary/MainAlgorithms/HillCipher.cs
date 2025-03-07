@@ -45,6 +45,18 @@ namespace SecurityLibrary
         }
 
 
+        public int GCD(int determinant, int modulo)
+        {
+            while (modulo != 0)
+            {
+                int temp = modulo;
+                modulo = determinant % modulo;
+                determinant = temp;
+            }
+            return determinant;
+        }
+
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();
