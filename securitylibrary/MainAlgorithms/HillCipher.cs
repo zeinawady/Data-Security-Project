@@ -114,6 +114,62 @@ namespace SecurityLibrary
         }
 
 
+        public List<int> Inverse3by3(List<int> matrix, int bvalue)
+        {
+            /* k = [A   B   C]      =>      cofactor(K)= [+(EI−FH)  −(DI−FG)    +(DH−EG)]       => Transpose the cofactor matrix
+             *     [D   E   F]                           [−(BI−CH)  +(AI−CG)    −(AH−BG)]
+             *     [G   H   I]                           [+(BF−CE)  −(AF−CD)    +(AE−BD)]
+             *     
+             * Loop on the matrix and handle the negative values
+             * Get the modulo 26 of the matrix
+             * Multiply the matrix by the bValue then get the modulo 26 again
+             * det(K)=A(EI−FH)−B(DI−FG)+C(DH−EG)
+             */
+
+            if (matrix.Count != 9)
+            {
+                throw new Exception("Wrong matrix size. Must be 3*3");
+            }
+
+            int adjA, adjB, adjC, adjD, adjE, adjF, adjG, adjH, adjI;
+
+            adjA = ((matrix[4] * matrix[8]) - (matrix[5] * matrix[7])) % 26;         //+(EI−FH)
+
+            adjB = (-((matrix[3] * matrix[8]) - (matrix[5] * matrix[6]))) % 26;      //−(DI−FG)
+
+            adjC = ((matrix[3] * matrix[7]) - (matrix[4] * matrix[6])) % 26;         //+(DH−EG)
+
+            adjD = (-((matrix[1] * matrix[8]) - (matrix[2] * matrix[7]))) % 26;      //−(BI−CH)
+
+            adjE = ((matrix[0] * matrix[8]) - (matrix[2] * matrix[6])) % 26;         //+(AI−CG)
+
+            adjF = (-((matrix[0] * matrix[7]) - (matrix[1] * matrix[6]))) % 26;      //−(AH−BG)
+
+            adjG = ((matrix[1] * matrix[5]) - (matrix[2] * matrix[4])) % 26;         //+(BF−CE)
+
+            adjH = (-((matrix[0] * matrix[5]) - (matrix[2] * matrix[3]))) % 26;      //−(AF−CD)
+
+            adjI = ((matrix[0] * matrix[4]) - (matrix[1] * matrix[3])) % 26;         //+(AE−BD)
+
+            //Adding the ajoints in a transposed manner to the list
+            List<int> inverse3 = new List<int> { adjA, adjD, adjG,
+                                                 adjB, adjE, adjH,
+                                                 adjC, adjF, adjI };
+
+            //Handling negative values
+            for (int i = 0; i < 9; i++)
+            {
+                while (inverse3[i] < 0)
+                {
+                    inverse3[i] += 26;
+                }
+                inverse3[i] %= 26;
+                inverse3[i] = (inverse3[i] * bvalue) % 26;
+            }
+            return inverse3;
+        }
+
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();
