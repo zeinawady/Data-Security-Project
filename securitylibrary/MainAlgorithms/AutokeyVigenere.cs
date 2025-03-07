@@ -28,6 +28,17 @@ namespace SecurityLibrary
             // جدول لكل الحروف، وحاطط لكل حرف كل الاحتمالات اللي ممكن يطلع بيها، بحيث أن تقاطع الحرفين هيطلع الحرف المشفر
 
         }
+        private static string ExtendKey(string key, int length)
+        {
+            StringBuilder extendedKey = new StringBuilder();
+            for (int i = 0; i < length; i++)
+            {
+                extendedKey.Append(key[i % key.Length]);
+            }
+            return extendedKey.ToString();
+            // extends key to be equals the plain text
+        }
+
 
         public string Analyse(string plainText, string cipherText)
         {
@@ -56,7 +67,22 @@ namespace SecurityLibrary
                 key_stream += (char)(row_index + 'A');
 
             }
-            key = key_stream.Substring(0, key_stream.IndexOf(plainText[0]));
+            key = key_stream.ToString();
+
+            for (int length = 1; length <= key.Length / 2; length++)
+            {
+                string subKey = key.Substring(0, length);
+                string repeatedKey = "";
+
+                while (repeatedKey.Length < key.Length)
+                    repeatedKey += subKey;
+
+                if (repeatedKey.StartsWith(key))
+                    return subKey;
+            }
+
+
+            //key = key_stream.Substring(0, key_stream.IndexOf(plainText[0]));
             return key;
         }
 
