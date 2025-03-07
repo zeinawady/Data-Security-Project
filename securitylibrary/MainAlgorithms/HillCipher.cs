@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,9 +27,9 @@ namespace SecurityLibrary
                 case 9:
 
 
-                    determinant = matrix[0] * (matrix[4] * matrix[8] - matrix[5] * matrix[7]) -
-                                  matrix[1] * (matrix[3] * matrix[8] - matrix[5] * matrix[6]) +
-                                  matrix[2] * (matrix[3] * matrix[7] - matrix[4] * matrix[6]);
+                    determinant = (matrix[0] * (matrix[4] * matrix[8] - matrix[5] * matrix[7]) -
+                                   matrix[1] * (matrix[3] * matrix[8] - matrix[5] * matrix[6]) +
+                                   matrix[2] * (matrix[3] * matrix[7] - matrix[4] * matrix[6])) % 26;
                     break;
                 default:
                     //Other matrices aren't supported
@@ -54,6 +55,7 @@ namespace SecurityLibrary
             }
             return determinant;
         }
+
 
         public int GetbValue(int determinant)
         {
@@ -131,28 +133,30 @@ namespace SecurityLibrary
 
             int adjA, adjB, adjC, adjD, adjE, adjF, adjG, adjH, adjI;
 
-            adjA = (matrix[4] * matrix[8]) - (matrix[5] * matrix[7]);                 //+(EI−FH)
+            adjA = ((matrix[4] * matrix[8]) - (matrix[5] * matrix[7])) % 26;         //+(EI−FH)
 
-            adjB = (matrix[3] * matrix[8]) - (matrix[5] * matrix[6]); adjB *= -1;     //−(DI−FG)
+            adjB = (-((matrix[3] * matrix[8]) - (matrix[5] * matrix[6]))) % 26;      //−(DI−FG)
 
-            adjC = (matrix[3] * matrix[7]) - (matrix[4] * matrix[6]);                 //+(DH−EG)
+            adjC = ((matrix[3] * matrix[7]) - (matrix[4] * matrix[6])) % 26;         //+(DH−EG)
 
-            adjD = (matrix[1] * matrix[8]) - (matrix[2] * matrix[7]); adjD *= -1;     //−(BI−CH)
+            adjD = (-((matrix[1] * matrix[8]) - (matrix[2] * matrix[7]))) % 26;      //−(BI−CH)
 
-            adjE = (matrix[0] * matrix[8]) - (matrix[2] * matrix[6]);                 //+(AI−CG)
+            adjE = ((matrix[0] * matrix[8]) - (matrix[2] * matrix[6])) % 26;         //+(AI−CG)
 
-            adjF = (matrix[0] * matrix[7]) - (matrix[1] * matrix[6]); adjF *= -1;     //−(AH−BG)
+            adjF = (-((matrix[0] * matrix[7]) - (matrix[1] * matrix[6]))) % 26;      //−(AH−BG)
 
-            adjG = (matrix[1] * matrix[5]) - (matrix[2] * matrix[4]);                 //+(BF−CE)
+            adjG = ((matrix[1] * matrix[5]) - (matrix[2] * matrix[4])) % 26;         //+(BF−CE)
 
-            adjH = (matrix[0] * matrix[5]) - (matrix[2] * matrix[3]); adjH *= -1;     //−(AF−CD)
+            adjH = (-((matrix[0] * matrix[5]) - (matrix[2] * matrix[3]))) % 26;      //−(AF−CD)
 
-            adjI = (matrix[0] * matrix[4]) - (matrix[1] * matrix[3]);                 //+(AE−BD)
+            adjI = ((matrix[0] * matrix[4]) - (matrix[1] * matrix[3])) % 26;         //+(AE−BD)
 
             //Adding the ajoints in a transposed manner to the list
-            List<int> inverse3 = new List<int> { adjA, adjD, adjG, adjB, adjE, adjH, adjC, adjF, adjI };
+            List<int> inverse3 = new List<int> { adjA, adjD, adjG, 
+                                                 adjB, adjE, adjH,
+                                                 adjC, adjF, adjI };
 
-
+            //Handling negative values
             for (int i = 0; i < 9; i++)
             {
                 while (inverse3[i] < 0)
@@ -160,10 +164,12 @@ namespace SecurityLibrary
                     inverse3[i] += 26;
                 }
                 inverse3[i] %= 26;
-                inverse3[i] = (inverse3[i] * bvalue) % 26;    // Apply modular inverse multiplier
+                inverse3[i] = (inverse3[i] * bvalue) % 26;    
             }
             return inverse3;
         }
+       
+        
         public List<int> Multiply2by2(List<int> matrix1, List<int> matrix2)
         {
             if (matrix1.Count() != 4 || matrix2.Count() != 4)
@@ -225,13 +231,12 @@ namespace SecurityLibrary
 
             for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 3; j++)  // 'j' should come before 'k'
+                for (int j = 0; j < 3; j++)  
                 {
                     for (int k = 0; k < 3; k++)
                     {
                         multiply3by3[i, j] += mat1[i, k] * mat2[k, j];
                     }
-                    multiply3by3[i, j] = (multiply3by3[i, j] % 26 + 26) % 26;  // Apply modulo inside loop
                 }
             }
             List<int> resultList = new List<int> { };
@@ -242,9 +247,14 @@ namespace SecurityLibrary
                     resultList.Add(multiply3by3[i, j]);
                 }
             }
+            //Handle negative values and get mod of the list
             for (int i = 0; i < 9; i++)
             {
-                resultList[i] = ((resultList[i] % 26) + 26) % 26;  // Ensures non-negative values in one step
+                while (resultList[i] < 0)
+                {
+                    resultList[i] += 26;
+                }
+                resultList[i] %= 26;
             }
 
             return resultList;
@@ -253,23 +263,24 @@ namespace SecurityLibrary
 
         List<int> listMultiplication(List<int> text, List<int> key)
         {
-            List<int> res = new List<int>();
-            int n = key.Count();
-            n = (int)Math.Sqrt(n);
-            for (int i = 0; i < text.Count(); i += n)
+            List<int> multiplicationResult = new List<int>();
+            int size = key.Count();
+            size = (int)Math.Sqrt(size);
+            for (int i = 0; i < text.Count(); i += size)
             {
-                for (int j = 0; j < key.Count(); j += n)
+                for (int j = 0; j < key.Count(); j += size)
                 {
-                    int x = 0;
-                    for (int k = 0; k < n; k++)
+                    int indexSum = 0;
+                    for (int k = 0; k < size; k++)
                     {
-                        x += key[j + k] * text[i + k];
+                        indexSum += key[j + k] * text[i + k];
                     }
-                    res.Add(x % 26);
+                    multiplicationResult.Add(indexSum % 26);
                 }
             }
-            return res;
+            return multiplicationResult;
         }
+
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
@@ -307,19 +318,19 @@ namespace SecurityLibrary
         {
 
             //Validating the passed cipher text
-            /*for (int i = 0; i < cipherText.Count(); i++)
+            for (int i = 0; i < cipherText.Count(); i++)
             {
                 if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
                 {
                     throw new Exception("Invalid Cipher text");
                 }
-            }*/
+            }
 
             int determinant = getDeterminant(key);
 
             if (determinant == 0)
             {
-                throw new NotImplementedException();
+                throw new InvalidAnlysisException();
             }
 
             int bvalue = GetbValue(determinant);
@@ -339,23 +350,22 @@ namespace SecurityLibrary
                 
             }
             List<int> plain = listMultiplication(cipherText, keyInverse);
+
+            //Validating the result plain text
             List<int> cipher = new List<int> { };
+
             cipher = Encrypt(plain, keyInverse);
+
             if (!cipher.SequenceEqual(cipherText))
-                throw new NotImplementedException();
+                throw new InvalidAnlysisException();
             else
                 return plain;
-
-            //throw new NotImplementedException();
         }
 
-
         
-
         public List<int> Encrypt(List<int> plainText, List<int> key)
         {
-
-            
+  
             //Validating the passed text
             for (int i = 0; i < plainText.Count(); i++)
             {
@@ -366,10 +376,12 @@ namespace SecurityLibrary
             }
 
             int determinant = getDeterminant(key); 
-            //2*2 Encryption 
-            int gcd = GCD(determinant, 26);
+            int gcd = GCD(determinant, 26); //Insuring that the determinant and 26 have no common divisors but 1
+
+
             if (gcd == 1 && determinant != 0)
             {
+                //2*2 Encryption 
                 if (key.Count() == 4)
                 {
                     List<int> Cipher2by2 = new List<int> { };
@@ -404,22 +416,18 @@ namespace SecurityLibrary
                 }
             }
             else
-                throw new NotImplementedException();
+                throw new InvalidAnlysisException();
         }
 
 
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
-            // c=pk => k =cp^-1
-            // Get det(plain) => Get bValue (det(plain))
-            // Get the inverse of plain
-            // multiply cipher * plain inverse 
-
+            
             //Validating the passed matrices size
-            /*if (plainText.Count != 9 || cipherText.Count != 9)
+            if (plainText.Count != 9 || cipherText.Count != 9)
             {
                 throw new Exception("Can't get the key. Wrong size matrices");
-            }*/
+            }
 
             //Validating the passed letter values
             for (int i = 0; i < cipherText.Count; i++)
@@ -439,13 +447,35 @@ namespace SecurityLibrary
             }
 
             int determinant3 = getDeterminant(plainText);
+
+            int gcd = GCD(determinant3, 26); //Insuring that the determinant and 26 have no common divisors but 1
+
+
+            if (gcd != 1 || determinant3 == 0)
+            {
+                throw new InvalidAnlysisException();
+            }
+
             int bvalue = GetbValue(determinant3);
 
-            List<int> plainInverse = Inverse3by3(plainText, bvalue);
-            List<int> key3by3 = Multiply3by3(cipherText, plainInverse);
+            if (bvalue == -1)
+            {
+                throw new InvalidAnlysisException();
+            }
 
+            List<int> plainInverse = Inverse3by3(plainText, bvalue);
+            //Transposing the cipher matrix
+            int A = cipherText[0], B = cipherText[1], C = cipherText[2],
+                D = cipherText[3], E = cipherText[4], F = cipherText[5], 
+                G = cipherText[6], H = cipherText[7], I = cipherText[8];
+            List<int> cipherTranspose = new List<int> { A, D, G, 
+                                                        B, E, H, 
+                                                        C, F, I };
+            List<int> key3by3 = Multiply3by3(cipherTranspose, plainInverse);
             return key3by3;
             //throw new NotImplementedException();
         }
+    
+    
     }
 }
