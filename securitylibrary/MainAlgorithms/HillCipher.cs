@@ -199,7 +199,6 @@ namespace SecurityLibrary
         }
 
 
-
         public List<int> Multiply3by3(List<int> matrix1, List<int> matrix2)
         {
             /*                k0   k1  k2                           j0   j1  j2
@@ -261,6 +260,26 @@ namespace SecurityLibrary
             return resultList;
         }
 
+
+        List<int> listMultiplication(List<int> text, List<int> key)
+        {
+            List<int> multiplicationResult = new List<int>();
+            int size = key.Count();
+            size = (int)Math.Sqrt(size);
+            for (int i = 0; i < text.Count(); i += size)
+            {
+                for (int j = 0; j < key.Count(); j += size)
+                {
+                    int indexSum = 0;
+                    for (int k = 0; k < size; k++)
+                    {
+                        indexSum += key[j + k] * text[i + k];
+                    }
+                    multiplicationResult.Add(indexSum % 26);
+                }
+            }
+            return multiplicationResult;
+        }
 
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
