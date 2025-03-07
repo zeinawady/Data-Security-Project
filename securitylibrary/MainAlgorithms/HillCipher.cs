@@ -80,6 +80,40 @@ namespace SecurityLibrary
         }
 
 
+        public List<int> Inverse2by2(List<int> matrix, int bvalue)
+        {
+            if (matrix.Count() != 4)
+            {
+                throw new Exception("Wrong matrix size");
+            }
+            /* matrix = {A, B, C, D} => [A  B]          inverse = (bvalue * [D   -B]
+             *                          [C  D]                              [-C   A]) % 26
+             *                          
+             */
+            List<int> inverse2 = new List<int> { };
+            int A, B, C, D;
+
+            D = matrix[3] * bvalue;
+            inverse2.Add(D);
+
+            B = matrix[1] * -1 * bvalue;
+            inverse2.Add(B);
+
+            C = matrix[2] * -1 * bvalue;
+            inverse2.Add(C);
+
+            A = matrix[0] * bvalue;
+            inverse2.Add(A);
+
+            for (int i = 0; i < 4; i++)
+            {
+                while (inverse2[i] < 0) { inverse2[i] += 26; }
+                inverse2[i] %= 26;
+            }
+            return inverse2;
+        }
+
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();
