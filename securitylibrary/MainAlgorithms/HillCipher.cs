@@ -11,6 +11,40 @@ namespace SecurityLibrary
     /// </summary>
     public class HillCipher :  ICryptographicTechnique<List<int>, List<int>>
     {
+
+
+        public int getDeterminant(List<int> matrix)
+        {
+            int determinant;
+            int size = matrix.Count();
+            switch (size)
+            {
+                case 4:
+                    //Determinant of 2*2 matrix
+                    determinant = (matrix[0] * matrix[3] -
+                                   matrix[1] * matrix[2]) % 26;
+                    break;
+                case 9:
+
+
+                    determinant = (matrix[0] * (matrix[4] * matrix[8] - matrix[5] * matrix[7]) -
+                                   matrix[1] * (matrix[3] * matrix[8] - matrix[5] * matrix[6]) +
+                                   matrix[2] * (matrix[3] * matrix[7] - matrix[4] * matrix[6])) % 26;
+                    break;
+                default:
+                    //Other matrices aren't supported
+                    throw new Exception("Finding determinants of matrices of any sizes rather than 2*2 or 3*3 is NOT supported");
+            }
+            // Ensure the determinant is non-negative
+            while (determinant < 0)
+            {
+                determinant += 26;
+            }
+            determinant %= 26;
+            return determinant;
+        }
+
+
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
             throw new NotImplementedException();

@@ -18,3 +18,9 @@ D:\All projects\Temporary Folders\Data Security project on git\milestone1\Securi
 D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 D:\All projects\Temporary Folders\Data Security project on git\milestone1\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
