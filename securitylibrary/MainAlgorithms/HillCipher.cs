@@ -284,13 +284,41 @@ namespace SecurityLibrary
 
         public List<int> Analyse(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
+            for (int a = 0; a < 26; a++)
+            {
+                for (int b = 0; b < 26; b++)
+                {
+                    for (int c = 0; c < 26; c++)
+                    {
+                        for (int d = 0; d < 26; d++)
+                        {
+                            List<int> possibleKey = new List<int> { };
+                            possibleKey.Add(a);
+                            possibleKey.Add(b);
+                            possibleKey.Add(c);
+                            possibleKey.Add(d);
+                            int determinant = getDeterminant(possibleKey);
+                            int det_Mod_gcd = GCD(determinant, 26);
+                            if (det_Mod_gcd != 1 || determinant == 0) { continue; }
+
+                            List<int> possibleCipher = Encrypt(plainText, possibleKey);
+                            if (possibleCipher.SequenceEqual(cipherText))
+                            {
+                                return possibleKey;
+                            }
+                        }
+                    }
+                }
+            }
+            throw new InvalidAnlysisException();
         }
 
 
         public List<int> Decrypt(List<int> cipherText, List<int> key)
         {
+
             throw new NotImplementedException();
+
         }
 
 
