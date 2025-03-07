@@ -296,9 +296,59 @@ namespace SecurityLibrary
 
         public List<int> Encrypt(List<int> plainText, List<int> key)
         {
-            throw new NotImplementedException();
-        }
 
+            //Validating the passed text
+            for (int i = 0; i < plainText.Count(); i++)
+            {
+                if (plainText.ElementAt(i) > 25 || plainText.ElementAt(i) < 0)
+                {
+                    throw new Exception("Plain text includes invalid values");
+                }
+            }
+
+            int determinant = getDeterminant(key);
+            int gcd = GCD(determinant, 26); //Insuring that the determinant and 26 have no common divisors but 1
+
+
+            if (gcd == 1 && determinant != 0)
+            {
+                //2*2 Encryption 
+                if (key.Count() == 4)
+                {
+                    List<int> Cipher2by2 = new List<int> { };
+
+                    for (int i = 0; i < plainText.Count(); i += 2)
+                    {
+                        int firstElement = (key.ElementAt(0) * plainText.ElementAt(i) + key.ElementAt(1) * plainText.ElementAt(i + 1)) % 26;
+                        int secondElement = (key.ElementAt(2) * plainText.ElementAt(i) + key.ElementAt(3) * plainText.ElementAt(i + 1)) % 26;
+                        Cipher2by2.Add(firstElement);
+                        Cipher2by2.Add(secondElement);
+                    }
+                    return Cipher2by2;
+                }
+
+                //3*3 Encryption
+                else
+                {
+                    List<int> Cipher3by3 = new List<int> { };
+
+                    for (int i = 0; i < plainText.Count(); i += 3)
+                    {
+                        int firstElement = (key[0] * plainText[i] + key[1] * plainText[i + 1] + key[2] * plainText[i + 2]) % 26;
+                        int secondElement = (key[3] * plainText[i] + key[4] * plainText[i + 1] + key[5] * plainText[i + 2]) % 26;
+                        int thirdElement = (key[6] * plainText[i] + key[7] * plainText[i + 1] + key[8] * plainText[i + 2]) % 26;
+
+                        Cipher3by3.Add(firstElement);
+                        Cipher3by3.Add(secondElement);
+                        Cipher3by3.Add(thirdElement);
+
+                    }
+                    return Cipher3by3;
+                }
+            }
+            else
+                throw new InvalidAnlysisException();
+        }
 
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
