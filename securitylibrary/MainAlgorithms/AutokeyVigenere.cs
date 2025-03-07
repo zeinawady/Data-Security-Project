@@ -72,12 +72,12 @@ namespace SecurityLibrary
             for (int length = 1; length <= key.Length / 2; length++)
             {
                 string subKey = key.Substring(0, length);
-                string repeatedKey = "";
+                string autoKey = "";
 
-                while (repeatedKey.Length < key.Length)
-                    repeatedKey += subKey;
+                while (autoKey.Length < key.Length)
+                    autoKey += subKey;
 
-                if (repeatedKey.StartsWith(key))
+                if (autoKey.StartsWith(key))
                     return subKey;
             }
 
