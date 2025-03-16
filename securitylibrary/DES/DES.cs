@@ -130,6 +130,13 @@ namespace SecurityLibrary.DES
             return permutedText;
         }
 
+        public string generateSubKey(string key, int shiftVal)
+        {
+            string shiftedBlock = key.Substring(0, shiftVal);
+            string shiftedKey = key.Substring(shiftVal) + shiftedBlock;
+            return shiftedKey;
+        }
+
         public string XOR(string text1,string text2)
         {
             string result = "";
