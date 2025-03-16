@@ -132,8 +132,17 @@ namespace SecurityLibrary.DES
 
         public string generateSubKey(string key, int shiftVal)
         {
-            string shiftedBlock = key.Substring(0, shiftVal);
-            string shiftedKey = key.Substring(shiftVal) + shiftedBlock;
+            string leftKey = key.Substring(0, 28);
+            string rightKey = key.Substring(28);
+        
+            string shiftedLeftBits = leftKey.Substring(0, shiftVal);
+            string shiftedRightBits = rightKey.Substring(0, shiftVal);
+        
+            string shiftedLeftKey = leftKey.Substring(shiftVal) + shiftedLeftBits;
+            string shiftedRightKey = rightKey.Substring(shiftVal) + shiftedRightBits;
+        
+            string shiftedKey = shiftedLeftKey + shiftedRightKey;
+        
             return shiftedKey;
         }
 
