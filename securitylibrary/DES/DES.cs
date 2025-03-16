@@ -117,7 +117,7 @@ namespace SecurityLibrary.DES
                                 2,8,24,14,32,27,3,9,
                                 19,13,30,6,22,11,4,25};
         
-        private string permute(int[] permutationArr, string text)
+        public string permute(int[] permutationArr, string text)
         {
             string permutedText = "";
             for (int i = 0; i < permutationArr.Length; i++)
@@ -128,6 +128,18 @@ namespace SecurityLibrary.DES
             }
         
             return permutedText;
+        }
+
+        public string XOR(string text1,string text2)
+        {
+            string result = "";
+            for (int i = 0; i < text1.Length; i++)
+            {
+                int bit1 = int.Parse(text1[i].ToString());
+                int bit2 = int.Parse(text2[i].ToString());
+                result += (bit1 + bit2 == 1) ? "1" : "0";
+            }
+            return result;
         }
         
         public override string Decrypt(string cipherText, string key)
