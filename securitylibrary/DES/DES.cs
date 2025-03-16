@@ -161,6 +161,67 @@ namespace SecurityLibrary.DES
             throw new NotImplementedException();
         }
 
+
+        public static Dictionary<string, string> hexMap = new Dictionary<string, string>
+        {
+            {"0", "0000" }, {"1", "0001"} ,{"2", "0010"}, {"3", "0011"},
+            {"4", "0100" }, {"5", "0101"} ,{"6", "0110"}, {"7", "0111"},
+            {"8", "1000" }, {"9", "1001"} ,{"A", "1010"}, {"B", "1011"},
+            {"C", "1100" }, {"D", "1101"} ,{"E", "1110"}, {"F", "1111"}
+        };
+
+        public string HexaToBinary(string hexa)
+        {
+            string binary = "";
+
+            // If the hex string has "0x" prefix, skip it
+            int startIndex = hexa.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? 2 : 0;
+
+            for (int i = startIndex; i < hexa.Length; i++)
+            {
+                string hexIndex = hexa[i].ToString().ToUpper(); // Ensure uppercase for dictionary lookup
+                if (hexMap.ContainsKey(hexIndex))
+                {
+                    binary += hexMap[hexIndex];
+                }
+
+            }
+            return binary;
+        }
+        public static Dictionary<string, string> binaryMap = new Dictionary<string, string>
+        {
+            {"0000", "0"}, {"0001", "1"}, {"0010", "2"}, {"0011", "3"},
+            {"0100", "4"}, {"0101", "5"}, {"0110", "6"}, {"0111", "7"},
+            {"1000", "8"}, {"1001", "9"}, {"1010", "A"}, {"1011", "B"},
+            {"1100", "C"}, {"1101", "D"}, {"1110", "E"}, {"1111", "F"}
+        };
+
+
+        public string BinaryToHexa(string binary)
+        {
+            string hexa = "0x";
+
+            if (binary.Length % 4 != 0)
+            {
+                int add = 4 - (binary.Length % 4);
+                binary = new string('0', add) + binary; // Add leading zeros
+            }
+
+            for (int i = 0; i < binary.Length; i += 4)
+            {
+                string binary4Chunk = binary.Substring(i, 4);//Take 4 bits each time
+
+                if (binaryMap.ContainsKey(binary4Chunk))
+                {
+                    hexa += binaryMap[binary4Chunk];
+                }
+            }
+
+            return hexa;
+        }
+
+
+
         public override string Encrypt(string plainText, string key)
         {
             throw new NotImplementedException();
