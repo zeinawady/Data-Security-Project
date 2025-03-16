@@ -116,6 +116,20 @@ namespace SecurityLibrary.DES
                                 1,15,23,26,5,18,31,10,
                                 2,8,24,14,32,27,3,9,
                                 19,13,30,6,22,11,4,25};
+        
+        private string permute(int[] permutationArr, string text)
+        {
+            string permutedText = "";
+            for (int i = 0; i < permutationArr.Length; i++)
+            {
+                int index = permutationArr[i] - 1;
+                permutedText += text[index];
+        
+            }
+        
+            return permutedText;
+        }
+        
         public override string Decrypt(string cipherText, string key)
         {
             throw new NotImplementedException();
