@@ -11,7 +11,7 @@ namespace SecurityLibrary.DES
     /// </summary>
     public class DES : CryptographicTechnique
     {
-        public static int[] PC_1 = {57, 49, 41, 33, 25, 17, 9,
+        public static int[] PC1 = {57, 49, 41, 33, 25, 17, 9,
                              1, 58, 50, 42, 34, 26, 18,
                              10, 2, 59, 51, 43, 35, 27,
                              19, 11, 3 ,60 ,52, 44, 36,
@@ -21,7 +21,7 @@ namespace SecurityLibrary.DES
                              21, 13, 5, 28, 20, 12, 4};
 
 
-        public static int[] PC_2 = {14, 17, 11, 24, 1, 5,
+        public static int[] PC2 = {14, 17, 11, 24, 1, 5,
                                      3, 28, 15, 6, 21, 10,
                                     23, 19, 12, 4, 26, 8,
                                     16, 7, 27, 20, 13, 2,
@@ -30,7 +30,7 @@ namespace SecurityLibrary.DES
                                     44, 49, 39, 56, 34, 53,
                                     46, 42, 50, 36, 29, 32};
 
-        public static int[] text_ip = new int[]{
+        public static int[] ip = {
                                     58,50,42,34,26,18,10,2,
                                     60,52,44,36,28,20,12,4,
                                     62,54,46,38,30,22,14,6,
@@ -40,7 +40,7 @@ namespace SecurityLibrary.DES
                                     61,53,45,37,29,21,13,5,
                                     63,55,47,39,31,23,15,7};
 
-        public static int[] expansion_table = new int[]{
+        public static int[] expansionTable = {
                                     32,1,2,3,4,5,4,5,
                                     6,7,8,9,8,9,10,11,
                                     12,13,12,13,14,15,16,17,
@@ -111,7 +111,7 @@ namespace SecurityLibrary.DES
             };
 
 
-        public static int[] sbox_permutation = new int[]{
+        public static int[] sbox_permutation = {
                                 16,7,20,21,29,12,28,17,
                                 1,15,23,26,5,18,31,10,
                                 2,8,24,14,32,27,3,9,
@@ -142,9 +142,7 @@ namespace SecurityLibrary.DES
             string result = "";
             for (int i = 0; i < text1.Length; i++)
             {
-                int bit1 = int.Parse(text1[i].ToString());
-                int bit2 = int.Parse(text2[i].ToString());
-                result += (bit1 + bit2 == 1) ? "1" : "0";
+                 result += (text1[i] == text2[i]) ? "0" : "1";
             }
             return result;
         }
