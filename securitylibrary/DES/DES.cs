@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace SecurityLibrary.DES
 {
@@ -156,6 +158,45 @@ namespace SecurityLibrary.DES
             return result;
         }
         
+        public int BinaryToDecimal(string binary)
+        {
+            return Convert.ToInt32(binary, 2);
+        }
+        public string DecimalToBinary(int decimalNum)
+        {
+            return Convert.ToString(decimalNum, 2).PadLeft(4, '0');  //ensure 4 bit output
+
+        }
+
+        public string SBox(string rightHalfPart)
+        {
+            //rightHalfText 48 bits
+            string[] splittedParts = new string[8];
+            int rowNo, colNo;
+            string sBoxResult = "";
+            int indexedValue = 0;
+            string indexedValueBinary = "";
+            //split into 8 parts each of 6 bits
+            for (int i = 0; i < 8; i++)
+            {
+                splittedParts[i] = rightHalfPart.Substring(i * 6, 6);
+            }
+            for (int i = 0; i < 8; i++)
+            {
+
+                rowNo = BinaryToDecimal(splittedParts[i][0].ToString() + splittedParts[i][5].ToString());
+                colNo = BinaryToDecimal(splittedParts[i].Substring(1, 4));
+
+                indexedValue = sbox[i, rowNo, colNo];
+                indexedValueBinary = DecimalToBinary(indexedValue);
+
+                sBoxResult += indexedValueBinary;
+
+
+            }
+
+            return sBoxResult;
+        }
         public override string Decrypt(string cipherText, string key)
         {
             throw new NotImplementedException();
