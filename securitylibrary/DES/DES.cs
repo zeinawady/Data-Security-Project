@@ -197,11 +197,6 @@ namespace SecurityLibrary.DES
 
             return sBoxResult;
         }
-        public override string Decrypt(string cipherText, string key)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public static Dictionary<string, string> hexMap = new Dictionary<string, string>
         {
@@ -262,10 +257,87 @@ namespace SecurityLibrary.DES
         }
 
 
+        public override string Decrypt(string cipherText, string key)
+        {
+            //throw new NotImplementedException();
+            cipherText = HexaToBinary(cipherText);
+            key = HexaToBinary(key);
+            string cirher_ip = permute(ip, cipherText);
+            string leftcipher = cirher_ip.Substring(0, 32);
+            string rightcipher = cirher_ip.Substring(32, 32);
+            string key_pc1 = permute(PC1, key);
+            string[] keyArr = new string[17];
+
+            for (int i = 1; i <= 16; i++)
+            {
+                if (i == 1 || i == 2 || i == 9 || i == 16)
+                {
+                    keyArr[i] = generateSubKey(key_pc1, 1);
+                }
+                else
+                {
+                    keyArr[i] = generateSubKey(key_pc1, 2);
+                }
+                key_pc1 = keyArr[i];
+            }
+
+            for (int i = 16; i >= 1; i--)
+            {
+                string key_pc2 = permute(PC2, keyArr[i]);
+                string expandedRight = permute(expansionTable, rightcipher);
+                string right_key = XOR(expandedRight, key_pc2);
+                string sbox = SBox(right_key);
+                string sbox_permute = permute(sbox_permutation, sbox);
+                string newRight = XOR(leftcipher, sbox_permute);
+                leftcipher = rightcipher;
+                rightcipher = newRight;
+            }
+            string cipher = rightcipher + leftcipher;
+            string plan = permute(invereIP, cipher);
+            plan = BinaryToHexa(plan);
+            return plan;
+
+
+        }
+
 
         public override string Encrypt(string plainText, string key)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            plainText = HexaToBinary(plainText);
+            key = HexaToBinary(key);
+            string plan_ip = permute(ip, plainText);
+            string leftPlan = plan_ip.Substring(0, 32);
+            string rightPlan = plan_ip.Substring(32, 32);
+            string key_pc1 = permute(PC1, key);
+            string subKey = "";
+
+            for (int i = 1; i <= 16; i++)
+            {
+                if (i == 1 || i == 2 || i == 9 || i == 16)
+                {
+                    subKey = generateSubKey(key_pc1, 1);
+                }
+                else
+                {
+                    subKey = generateSubKey(key_pc1, 2);
+                }
+
+                string key_pc2 = permute(PC2, subKey);
+                string expandedRight = permute(expansionTable, rightPlan);
+                string right_key = XOR(expandedRight, key_pc2);
+                string sbox = SBox(right_key);
+                string sbox_permute = permute(sbox_permutation, sbox);
+                string newRight = XOR(leftPlan, sbox_permute);
+                leftPlan = rightPlan;
+                rightPlan = newRight;
+
+                key_pc1 = subKey;
+            }
+            string plan = rightPlan + leftPlan;
+            string cipher = permute(invereIP, plan);
+            cipher = BinaryToHexa(cipher);
+            return cipher;
         }
     }
 }
