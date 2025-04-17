@@ -11,7 +11,218 @@ namespace SecurityLibrary.AES
     /// </summary>
     public class AES : CryptographicTechnique
     {
+        string multiplyBinaryByHex(string s1, string by)
+        {
+            if (by == "01")
+            {
+                return s1;
+            }
 
+            if (by == "02")
+            {
+                if (s1[0] == '0')
+                {
+                    return s1.Substring(1, s1.Length - 1) + "0";
+                }
+                else
+                {
+                    return XOR(s1.Substring(1, s1.Length - 1) + "0", "00011011");
+                }
+            }
+
+            if (by == "03")
+            {
+                return XOR(multiplyBinaryByHex(s1, "02"), s1);
+            }
+
+            if (by == "09")
+            {
+                return XOR(multiplyBinaryByHex(multiplyBinaryByHex(multiplyBinaryByHex(s1, "02"), "02"), "02"), s1); //x*9=(((x*2)*2)*2)+x
+            }
+
+            if (by == "0B")
+            {
+                return XOR(multiplyBinaryByHex(XOR(multiplyBinaryByHex(multiplyBinaryByHex(s1, "02"), "02"), s1), "02"), s1); //x*11=((((x*2)*2)+x)*2)+x
+            }
+
+            if (by == "0D")
+            {
+                return XOR(multiplyBinaryByHex(multiplyBinaryByHex(multiplyBinaryByHex(s1, "03"), "02"), "02"), s1); //x*13=(((x*3)×2)×2)+x
+            }
+
+            if (by == "0E")
+            {
+                return multiplyBinaryByHex(XOR(multiplyBinaryByHex(multiplyBinaryByHex(s1, "03"), "02"), s1), "02"); //x*14=(((x*3)×2)+x)×2
+            }
+
+            return string.Empty;
+        }
+
+        string convertToHex(string binary)
+        {
+
+            string hex = "";
+            int size = binary.Length;
+            for (int i = 0; i < size; i += 4)
+            {
+                string temp = binary.Substring(i, 4);
+                switch (temp)
+                {
+                    case "0000":
+                        hex += "0";
+                        break;
+                    case "0001":
+                        hex += "1";
+                        break;
+                    case "0010":
+                        hex += "2";
+                        break;
+                    case "0011":
+                        hex += "3";
+                        break;
+                    case "0100":
+                        hex += "4";
+                        break;
+                    case "0101":
+                        hex += "5";
+                        break;
+                    case "0110":
+                        hex += "6";
+                        break;
+                    case "0111":
+                        hex += "7";
+                        break;
+                    case "1000":
+                        hex += "8";
+                        break;
+                    case "1001":
+                        hex += "9";
+                        break;
+                    case "1010":
+                        hex += "A";
+                        break;
+                    case "1011":
+                        hex += "B";
+                        break;
+                    case "1100":
+                        hex += "C";
+                        break;
+                    case "1101":
+                        hex += "D";
+                        break;
+                    case "1110":
+                        hex += "E";
+                        break;
+                    case "1111":
+                        hex += "F";
+                        break;
+                }
+            }
+            return hex;
+
+        }
+
+        string convertToBinary(string hex)
+        {
+            string binary = "";
+            int size = hex.Length;
+            for (int i = 0; i < size; i++)
+            {
+                switch (hex[i])
+                {
+                    case '0':
+                        binary += "0000";
+                        break;
+                    case '1':
+                        binary += "0001";
+                        break;
+                    case '2':
+                        binary += "0010";
+                        break;
+                    case '3':
+                        binary += "0011";
+                        break;
+                    case '4':
+                        binary += "0100";
+                        break;
+                    case '5':
+                        binary += "0101";
+                        break;
+                    case '6':
+                        binary += "0110";
+                        break;
+                    case '7':
+                        binary += "0111";
+                        break;
+                    case '8':
+                        binary += "1000";
+                        break;
+                    case '9':
+                        binary += "1001";
+                        break;
+                    case 'A':
+                        binary += "1010";
+                        break;
+                    case 'B':
+                        binary += "1011";
+                        break;
+                    case 'C':
+                        binary += "1100";
+                        break;
+                    case 'D':
+                        binary += "1101";
+                        break;
+                    case 'E':
+                        binary += "1110";
+                        break;
+                    case 'F':
+                        binary += "1111";
+                        break;
+                }
+            }
+            return binary;
+        }
+
+        string[,] mixColumns(string[,] text, bool inverse)
+        {
+            string[,] R = new string[4, 4];
+            string[,] mixColumnMatrix = new string[4, 4] {
+                                                          {"02", "03", "01", "01"},
+                                                          {"01", "02", "03", "01"},
+                                                          {"01", "01", "02", "03"},
+                                                          {"03", "01", "01", "02"} };
+            if (inverse == true)
+            {               
+                mixColumnMatrix = new string[4, 4] {
+                                                    {"0E", "0B", "0D", "09"},
+                                                    {"09", "0E", "0B", "0D"},
+                                                    {"0D", "09", "0E", "0B"},
+                                                    {"0B", "0D", "09", "0E"}  };
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        string binary = convertToBinary(text[k, j]);
+                        string hex = mixColumnMatrix[i, k];
+                        if (R[i, j] == null)
+                        {
+                            R[i, j] = multiplyBinaryByHex(binary, hex);
+                        }
+                        else
+                        {
+                            R[i, j] = XOR(multiplyBinaryByHex(binary, hex), R[i, j]);
+                        }
+                    }
+
+                    R[i, j] = convertToHex(R[i, j]);
+                }
+            }
+
+            return R;
+        }
         public static string subByte(string hexa)
         {
             string result = "";
