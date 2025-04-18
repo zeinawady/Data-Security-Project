@@ -173,6 +173,22 @@ namespace SecurityLibrary.AES
             throw new NotImplementedException();
         }
 
+        public string[,] CreateStateMatrix(string text)
+        {
+            int idx = 0;
+            string[,] stateMatrix = new string[4, 4];
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    stateMatrix[j, i] = text.Substring(idx, 2);
+                    idx += 2;
+                }
+            }
+
+
+            return stateMatrix;
+        }
         public string XOR(string text1, string text2)
         {
             string result = "";
