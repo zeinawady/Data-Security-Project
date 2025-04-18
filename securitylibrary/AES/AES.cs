@@ -57,132 +57,6 @@ namespace SecurityLibrary.AES
 
             return string.Empty;
         }
-
-        string convertToHex(string binary)
-        {
-
-            string hex = "";
-            int size = binary.Length;
-            for (int i = 0; i < size; i += 4)
-            {
-                string temp = binary.Substring(i, 4);
-                switch (temp)
-                {
-                    case "0000":
-                        hex += "0";
-                        break;
-                    case "0001":
-                        hex += "1";
-                        break;
-                    case "0010":
-                        hex += "2";
-                        break;
-                    case "0011":
-                        hex += "3";
-                        break;
-                    case "0100":
-                        hex += "4";
-                        break;
-                    case "0101":
-                        hex += "5";
-                        break;
-                    case "0110":
-                        hex += "6";
-                        break;
-                    case "0111":
-                        hex += "7";
-                        break;
-                    case "1000":
-                        hex += "8";
-                        break;
-                    case "1001":
-                        hex += "9";
-                        break;
-                    case "1010":
-                        hex += "A";
-                        break;
-                    case "1011":
-                        hex += "B";
-                        break;
-                    case "1100":
-                        hex += "C";
-                        break;
-                    case "1101":
-                        hex += "D";
-                        break;
-                    case "1110":
-                        hex += "E";
-                        break;
-                    case "1111":
-                        hex += "F";
-                        break;
-                }
-            }
-            return hex;
-
-        }
-
-        string convertToBinary(string hex)
-        {
-            string binary = "";
-            int size = hex.Length;
-            for (int i = 0; i < size; i++)
-            {
-                switch (hex[i])
-                {
-                    case '0':
-                        binary += "0000";
-                        break;
-                    case '1':
-                        binary += "0001";
-                        break;
-                    case '2':
-                        binary += "0010";
-                        break;
-                    case '3':
-                        binary += "0011";
-                        break;
-                    case '4':
-                        binary += "0100";
-                        break;
-                    case '5':
-                        binary += "0101";
-                        break;
-                    case '6':
-                        binary += "0110";
-                        break;
-                    case '7':
-                        binary += "0111";
-                        break;
-                    case '8':
-                        binary += "1000";
-                        break;
-                    case '9':
-                        binary += "1001";
-                        break;
-                    case 'A':
-                        binary += "1010";
-                        break;
-                    case 'B':
-                        binary += "1011";
-                        break;
-                    case 'C':
-                        binary += "1100";
-                        break;
-                    case 'D':
-                        binary += "1101";
-                        break;
-                    case 'E':
-                        binary += "1110";
-                        break;
-                    case 'F':
-                        binary += "1111";
-                        break;
-                }
-            }
-            return binary;
-        }
-
         string[,] mixColumns(string[,] text, bool inverse)
         {
             string[,] R = new string[4, 4];
@@ -205,7 +79,7 @@ namespace SecurityLibrary.AES
                 {
                     for (int k = 0; k < 4; k++)
                     {
-                        string binary = convertToBinary(text[k, j]);
+                        string binary = HexaToBinary(text[k, j]);
                         string hex = mixColumnMatrix[i, k];
                         if (R[i, j] == null)
                         {
@@ -217,7 +91,7 @@ namespace SecurityLibrary.AES
                         }
                     }
 
-                    R[i, j] = convertToHex(R[i, j]);
+                    R[i, j] = BinaryToHexa(R[i, j]);
                 }
             }
 
