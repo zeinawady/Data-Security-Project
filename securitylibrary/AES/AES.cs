@@ -163,15 +163,104 @@ namespace SecurityLibrary.AES
             }
             return result;
         }
-        public override string Decrypt(string cipherText, string key)
-        {
-            throw new NotImplementedException();
-        }
+          public override string Decrypt(string cipherText, string key)
+   {
 
-        public override string Encrypt(string plainText, string key)
-        {
-            throw new NotImplementedException();
-        }
+       string[,] state = CreateStateMatrix(cipherText);
+       string[,] keyMatrix = CreateStateMatrix(key);
+       state = AddRoundKey(state, keyMatrix);
+       //cipherText = HexaToBinary(cipherText);
+       //key = HexaToBinary(key);
+       for (int round = 9; round >= 0; round--)
+       {
+
+
+           for (int i = 0; i < 4; i++)
+           {
+               for (int j = 0; j < 4; j++)
+               {
+                   state[i, j] = subByte_inverse(state[i, j]);
+               }
+           }
+           state = shiftRowsinv(state);
+           state = mixColumns(state, true);
+           state = AddRoundKey(state, keyMatrix);
+
+       }
+
+       for (int i = 0; i < 4; i++)
+       {
+           for (int j = 0; j < 4; j++)
+           {
+               state[i, j] = subByte_inverse(state[i, j]);
+           }
+       }
+       state = shiftRowsinv(state);
+       state = AddRoundKey(state, keyMatrix);
+
+      
+       string plainText = "";
+       for (int i = 0; i < 4; i++)
+       {
+           for (int j = 0; j < 4; j++)
+           {
+               plainText += state[j, i];
+           }
+       }
+
+       return plainText;
+
+       //throw new NotImplementedException();
+   }
+
+   public override string Encrypt(string plainText, string key)
+   {
+       //plainText = HexaToBinary(plainText);
+       //key = HexaToBinary(key);
+       string[,] stateMatrix = CreateStateMatrix(plainText);
+       string[,] keyMatrix = CreateStateMatrix(key);
+       stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+       for (int round = 1; round <= 9; round++)
+       {
+           for (int i = 0; i < 4; i++)
+           {
+               for (int j = 0; j < 4; j++)
+               {
+                   stateMatrix[i, j] = subByte(stateMatrix[i, j]);
+
+               }
+           }
+           stateMatrix = shiftRows(stateMatrix);
+           stateMatrix = mixColumns(stateMatrix, false);
+           stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+       }
+
+       for (int i = 0; i < 4; i++)
+       {
+           for (int j = 0; j < 4; j++)
+           {
+               stateMatrix[i, j] = subByte(stateMatrix[i, j]);
+           }
+
+       }
+       stateMatrix = shiftRows(stateMatrix);
+       stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+       string cipherText = "";
+       for (int i = 0; i < 4; i++)
+       {
+           for (int j = 0; j < 4; j++)
+           {
+               cipherText += stateMatrix[j, i];
+
+           }
+       }
+
+       return cipherText;
+       //throw new NotImplementedException();
+   }
 
         public string[,] CreateStateMatrix(string text)
         {
