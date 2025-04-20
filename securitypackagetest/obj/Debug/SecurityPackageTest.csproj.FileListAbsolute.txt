@@ -44,3 +44,12 @@ D:\VS-Community-Projects\Data-Security-Project\SecurityPackageTest\obj\Debug\Sec
 D:\VS-Community-Projects\Data-Security-Project\SecurityPackageTest\obj\Debug\Security.174D7A11.Up2Date
 D:\VS-Community-Projects\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
 D:\VS-Community-Projects\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\bin\Debug\SecurityPackageTest.dll
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\bin\Debug\SecurityPackageTest.pdb
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\bin\Debug\SecurityLibrary.dll
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\bin\Debug\SecurityLibrary.pdb
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.AssemblyReference.cache
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.csproj.CoreCompileInputs.cache
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\obj\Debug\Security.174D7A11.Up2Date
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.dll
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityPackageTest\obj\Debug\SecurityPackageTest.pdb

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,202 @@ namespace SecurityLibrary.AES
     /// </summary>
     public class AES : CryptographicTechnique
     {
+        public override string Decrypt(string cipherText, string key)
+        {
+            if (cipherText.StartsWith("0x"))
+            {
+                cipherText = cipherText.Substring(2);
+            }
+
+            if (key.StartsWith("0x"))
+            {
+                key = key.Substring(2);
+            }
+
+            cipherText = cipherText.ToUpper();
+            key = key.ToUpper();
+
+            string[,] state = CreateStateMatrix(cipherText);
+            string[][,] roundKeys = new string[11][,];
+            
+            roundKeys[0] = CreateStateMatrix(key);
+            for (int i = 1; i <= 10; i++)
+            {
+                roundKeys[i] = GenerateRoundKey(roundKeys[i - 1], i-1);
+            }
+
+            state = AddRoundKey(state, roundKeys[10]);
+
+
+            for (int round = 9; round >= 1; round--)
+            {
+
+                state = shiftRowsinv(state);
+                state = subBytes(state, true);
+                state = AddRoundKey(state, roundKeys[round]);
+                state = mixColumns(state, true);     
+            }
+
+            state = shiftRowsinv(state);
+            state = subBytes(state, true);
+            state = AddRoundKey(state, roundKeys[0]);
+
+            string plainText = "0x";
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    plainText += state[j, i];
+                }
+            }
+
+            return plainText;
+        }
+        public override string Encrypt(string plainText, string key)
+        {
+
+
+            if (plainText.StartsWith("0x"))
+            {
+                plainText = plainText.Substring(2);
+            }
+
+            if (key.StartsWith("0x"))
+            {
+                key = key.Substring(2);
+            }
+
+            plainText = plainText.ToUpper();
+            key = key.ToUpper();
+
+
+            string[,] stateMatrix = CreateStateMatrix(plainText);
+            string[,] keyMatrix = CreateStateMatrix(key);
+
+            stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+            for (int round = 0; round < 9; round++)
+            {
+
+                stateMatrix = subBytes(stateMatrix, false);
+
+                stateMatrix = shiftRows(stateMatrix);
+                stateMatrix = mixColumns(stateMatrix, false);
+                keyMatrix = GenerateRoundKey(keyMatrix, round);
+                stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+            }
+
+
+
+            stateMatrix = subBytes(stateMatrix, false);
+            stateMatrix = shiftRows(stateMatrix);
+            keyMatrix = GenerateRoundKey(keyMatrix, 9);
+            stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
+
+            string cipherText = "0x";
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    cipherText += stateMatrix[j, i];
+
+                }
+            }
+
+            return cipherText.ToUpper();
+
+        }
+
+        string[,] GenerateRoundKey(string[,] previousKey, int RconIndex)
+        {
+
+
+            string[] Rcon = new string[] { "01000000", "02000000", "04000000", "08000000", "10000000", "20000000", "40000000", "80000000", "1B000000", "36000000" };
+            Dictionary<string, string> sBox = new Dictionary<string, string>()
+        {
+            {"00", "63"}, {"01", "7C"}, {"02", "77"}, {"03", "7B"}, {"04", "F2"}, {"05", "6B"}, {"06", "6F"}, {"07", "C5"},
+            {"08", "30"}, {"09", "01"}, {"0A", "67"}, {"0B", "2B"}, {"0C", "FE"}, {"0D", "D7"}, {"0E", "AB"}, {"0F", "76"},
+            {"10", "CA"}, {"11", "82"}, {"12", "C9"}, {"13", "7D"}, {"14", "FA"}, {"15", "59"}, {"16", "47"}, {"17", "F0"},
+            {"18", "AD"}, {"19", "D4"}, {"1A", "A2"}, {"1B", "AF"}, {"1C", "9C"}, {"1D", "A4"}, {"1E", "72"}, {"1F", "C0"},
+            {"20", "B7"}, {"21", "FD"}, {"22", "93"}, {"23", "26"}, {"24", "36"}, {"25", "3F"}, {"26", "F7"}, {"27", "CC"},
+            {"28", "34"}, {"29", "A5"}, {"2A", "E5"}, {"2B", "F1"}, {"2C", "71"}, {"2D", "D8"}, {"2E", "31"}, {"2F", "15"},
+            {"30", "04"}, {"31", "C7"}, {"32", "23"}, {"33", "C3"}, {"34", "18"}, {"35", "96"}, {"36", "05"}, {"37", "9A"},
+            {"38", "07"}, {"39", "12"}, {"3A", "80"}, {"3B", "E2"}, {"3C", "EB"}, {"3D", "27"}, {"3E", "B2"}, {"3F", "75"},
+            {"40", "09"}, {"41", "83"}, {"42", "2C"}, {"43", "1A"}, {"44", "1B"}, {"45", "6E"}, {"46", "5A"}, {"47", "A0"},
+            {"48", "52"}, {"49", "3B"}, {"4A", "D6"}, {"4B", "B3"}, {"4C", "29"}, {"4D", "E3"}, {"4E", "2F"}, {"4F", "84"},
+            {"50", "53"}, {"51", "D1"}, {"52", "00"}, {"53", "ED"}, {"54", "20"}, {"55", "FC"}, {"56", "B1"}, {"57", "5B"},
+            {"58", "6A"}, {"59", "CB"}, {"5A", "BE"}, {"5B", "39"}, {"5C", "4A"}, {"5D", "4C"}, {"5E", "58"}, {"5F", "CF"},
+            {"60", "D0"}, {"61", "EF"}, {"62", "AA"}, {"63", "FB"}, {"64", "43"}, {"65", "4D"}, {"66", "33"}, {"67", "85"},
+            {"68", "45"}, {"69", "F9"}, {"6A", "02"}, {"6B", "7F"}, {"6C", "50"}, {"6D", "3C"}, {"6E", "9F"}, {"6F", "A8"},
+            {"70", "51"}, {"71", "A3"}, {"72", "40"}, {"73", "8F"}, {"74", "92"}, {"75", "9D"}, {"76", "38"}, {"77", "F5"},
+            {"78", "BC"}, {"79", "B6"}, {"7A", "DA"}, {"7B", "21"}, {"7C", "10"}, {"7D", "FF"}, {"7E", "F3"}, {"7F", "D2"},
+            {"80", "CD"}, {"81", "0C"}, {"82", "13"}, {"83", "EC"}, {"84", "5F"}, {"85", "97"}, {"86", "44"}, {"87", "17"},
+            {"88", "C4"}, {"89", "A7"}, {"8A", "7E"}, {"8B", "3D"}, {"8C", "64"}, {"8D", "5D"}, {"8E", "19"}, {"8F", "73"},
+            {"90", "60"}, {"91", "81"}, {"92", "4F"}, {"93", "DC"}, {"94", "22"}, {"95", "2A"}, {"96", "90"}, {"97", "88"},
+            {"98", "46"}, {"99", "EE"}, {"9A", "B8"}, {"9B", "14"}, {"9C", "DE"}, {"9D", "5E"}, {"9E", "0B"}, {"9F", "DB"},
+            {"A0", "E0"}, {"A1", "32"}, {"A2", "3A"}, {"A3", "0A"}, {"A4", "49"}, {"A5", "06"}, {"A6", "24"}, {"A7", "5C"},
+            {"A8", "C2"}, {"A9", "D3"}, {"AA", "AC"}, {"AB", "62"}, {"AC", "91"}, {"AD", "95"}, {"AE", "E4"}, {"AF", "79"},
+            {"B0", "E7"}, {"B1", "C8"}, {"B2", "37"}, {"B3", "6D"}, {"B4", "8D"}, {"B5", "D5"}, {"B6", "4E"}, {"B7", "A9"},
+            {"B8", "6C"}, {"B9", "56"}, {"BA", "F4"}, {"BB", "EA"}, {"BC", "65"}, {"BD", "7A"}, {"BE", "AE"}, {"BF", "08"},
+            {"C0", "BA"}, {"C1", "78"}, {"C2", "25"}, {"C3", "2E"}, {"C4", "1C"}, {"C5", "A6"}, {"C6", "B4"}, {"C7", "C6"},
+            {"C8", "E8"}, {"C9", "DD"}, {"CA", "74"}, {"CB", "1F"}, {"CC", "4B"}, {"CD", "BD"}, {"CE", "8B"}, {"CF", "8A"},
+            {"D0", "70"}, {"D1", "3E"}, {"D2", "B5"}, {"D3", "66"}, {"D4", "48"}, {"D5", "03"}, {"D6", "F6"}, {"D7", "0E"},
+            {"D8", "61"}, {"D9", "35"}, {"DA", "57"}, {"DB", "B9"}, {"DC", "86"}, {"DD", "C1"}, {"DE", "1D"}, {"DF", "9E"},
+            {"E0", "E1"}, {"E1", "F8"}, {"E2", "98"}, {"E3", "11"}, {"E4", "69"}, {"E5", "D9"}, {"E6", "8E"}, {"E7", "94"},
+            {"E8", "9B"}, {"E9", "1E"}, {"EA", "87"}, {"EB", "E9"}, {"EC", "CE"}, {"ED", "55"}, {"EE", "28"}, {"EF", "DF"},
+            {"F0", "8C"}, {"F1", "A1"}, {"F2", "89"}, {"F3", "0D"}, {"F4", "BF"}, {"F5", "E6"}, {"F6", "42"}, {"F7", "68"},
+            {"F8", "41"}, {"F9", "99"}, {"FA", "2D"}, {"FB", "0F"}, {"FC", "B0"}, {"FD", "54"}, {"FE", "BB"}, {"FF", "16"} };
+
+
+            string[,] generated_key = new string[4, 4];
+
+            string[] oldKeyword3 = new string[4];
+
+            for (int i = 1; i < 4; i++)
+            {
+                oldKeyword3[i - 1] = previousKey[i, 3];
+            }
+
+            oldKeyword3[3] = previousKey[0, 3];
+
+            string modified_w3 = "";
+            for (int i = 0; i < 4; i++)
+            {
+                modified_w3 += sBox[oldKeyword3[i]];
+            }
+
+
+            string RconValue = Rcon[RconIndex];
+            string result = XOR(HexaToBinary(modified_w3), HexaToBinary(RconValue));
+
+
+            string oldKeyword0 = "";
+            for (int i = 0; i < 4; i++)
+            {
+                oldKeyword0 += previousKey[i, 0];
+            }
+
+
+            result = BinaryToHexa(XOR(result, HexaToBinary(oldKeyword0)));
+
+            for (int i = 0; i < 4; i++)
+            {
+                generated_key[i, 0] = result.Substring(i * 2, 2);
+            }
+
+
+
+            for (int i = 1; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    generated_key[j, i] = BinaryToHexa(XOR(HexaToBinary(previousKey[j, i]), HexaToBinary(generated_key[j, i - 1]))); // Corrected function name
+                }
+            }
+
+            return generated_key;
+        }
         string multiplyBinaryByHex(string s1, string by)
         {
             if (by == "01")
@@ -66,7 +263,7 @@ namespace SecurityLibrary.AES
                                                           {"01", "01", "02", "03"},
                                                           {"03", "01", "01", "02"} };
             if (inverse == true)
-            {               
+            {
                 mixColumnMatrix = new string[4, 4] {
                                                     {"0E", "0B", "0D", "09"},
                                                     {"09", "0E", "0B", "0D"},
@@ -97,171 +294,76 @@ namespace SecurityLibrary.AES
 
             return R;
         }
-        public static string subByte(string hexa)
+        string[,] subBytes(string[,] text, bool inverse)
         {
-            string result = "";
-            string[] subByte_Sbox = {
-                "63", "7c", "77", "7b", "f2", "6b", "6f", "c5", "30", "01", "67", "2b", "fe", "d7", "ab", "76",
-                "ca", "82", "c9", "7d", "fa", "59", "47", "f0", "ad", "d4", "a2", "af", "9c", "a4", "72", "c0",
-                "b7", "fd", "93", "26", "36", "3f", "f7", "cc", "34", "a5", "e5", "f1", "71", "d8", "31", "15",
-                "04", "c7", "23", "c3", "18", "96", "05", "9a", "07", "12", "80", "e2", "eb", "27", "b2", "75",
-                "09", "83", "2c", "1a", "1b", "6e", "5a", "a0", "52", "3b", "d6", "b3", "29", "e3", "2f", "84",
-                "53", "d1", "00", "ed", "20", "fc", "b1", "5b", "6a", "cb", "be", "39", "4a", "4c", "58", "cf",
-                "d0", "ef", "aa", "fb", "43", "4d", "33", "85", "45", "f9", "02", "7f", "50", "3c", "9f", "a8",
-                "51", "a3", "40", "8f", "92", "9d", "38", "f5", "bc", "b6", "da", "21", "10", "ff", "f3", "d2",
-                "cd", "0c", "13", "ec", "5f", "97", "44", "17", "c4", "a7", "7e", "3d", "64", "5d", "19", "73",
-                "60", "81", "4f", "dc", "22", "2a", "90", "88", "46", "ee", "b8", "14", "de", "5e", "0b", "db",
-                "e0", "32", "3a", "0a", "49", "06", "24", "5c", "c2", "d3", "ac", "62", "91", "95", "e4", "79",
-                "e7", "c8", "37", "6d", "8d", "d5", "4e", "a9", "6c", "56", "f4", "ea", "65", "7a", "ae", "08",
-                "ba", "78", "25", "2e", "1c", "a6", "b4", "c6", "e8", "dd", "74", "1f", "4b", "bd", "8b", "8a",
-                "70", "3e", "b5", "66", "48", "03", "f6", "0e", "61", "35", "57", "b9", "86", "c1", "1d", "9e",
-                "e1", "f8", "98", "11", "69", "d9", "8e", "94", "9b", "1e", "87", "e9", "ce", "55", "28", "df",
-                "8c", "a1", "89", "0d", "bf", "e6", "42", "68", "41", "99", "2d", "0f", "b0", "54", "bb", "16"
-            };
-            if (hexa.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            // Define the normal S-box
+            Dictionary<string, string> sBox = new Dictionary<string, string>()
+    {
+        {"00", "63"}, {"01", "7C"}, {"02", "77"}, {"03", "7B"}, {"04", "F2"}, {"05", "6B"}, {"06", "6F"}, {"07", "C5"},
+        {"08", "30"}, {"09", "01"}, {"0A", "67"}, {"0B", "2B"}, {"0C", "FE"}, {"0D", "D7"}, {"0E", "AB"}, {"0F", "76"},
+        {"10", "CA"}, {"11", "82"}, {"12", "C9"}, {"13", "7D"}, {"14", "FA"}, {"15", "59"}, {"16", "47"}, {"17", "F0"},
+        {"18", "AD"}, {"19", "D4"}, {"1A", "A2"}, {"1B", "AF"}, {"1C", "9C"}, {"1D", "A4"}, {"1E", "72"}, {"1F", "C0"},
+        {"20", "B7"}, {"21", "FD"}, {"22", "93"}, {"23", "26"}, {"24", "36"}, {"25", "3F"}, {"26", "F7"}, {"27", "CC"},
+        {"28", "34"}, {"29", "A5"}, {"2A", "E5"}, {"2B", "F1"}, {"2C", "71"}, {"2D", "D8"}, {"2E", "31"}, {"2F", "15"},
+        {"30", "04"}, {"31", "C7"}, {"32", "23"}, {"33", "C3"}, {"34", "18"}, {"35", "96"}, {"36", "05"}, {"37", "9A"},
+        {"38", "07"}, {"39", "12"}, {"3A", "80"}, {"3B", "E2"}, {"3C", "EB"}, {"3D", "27"}, {"3E", "B2"}, {"3F", "75"},
+        {"40", "09"}, {"41", "83"}, {"42", "2C"}, {"43", "1A"}, {"44", "1B"}, {"45", "6E"}, {"46", "5A"}, {"47", "A0"},
+        {"48", "52"}, {"49", "3B"}, {"4A", "D6"}, {"4B", "B3"}, {"4C", "29"}, {"4D", "E3"}, {"4E", "2F"}, {"4F", "84"},
+        {"50", "53"}, {"51", "D1"}, {"52", "00"}, {"53", "ED"}, {"54", "20"}, {"55", "FC"}, {"56", "B1"}, {"57", "5B"},
+        {"58", "6A"}, {"59", "CB"}, {"5A", "BE"}, {"5B", "39"}, {"5C", "4A"}, {"5D", "4C"}, {"5E", "58"}, {"5F", "CF"},
+        {"60", "D0"}, {"61", "EF"}, {"62", "AA"}, {"63", "FB"}, {"64", "43"}, {"65", "4D"}, {"66", "33"}, {"67", "85"},
+        {"68", "45"}, {"69", "F9"}, {"6A", "02"}, {"6B", "7F"}, {"6C", "50"}, {"6D", "3C"}, {"6E", "9F"}, {"6F", "A8"},
+        {"70", "51"}, {"71", "A3"}, {"72", "40"}, {"73", "8F"}, {"74", "92"}, {"75", "9D"}, {"76", "38"}, {"77", "F5"},
+        {"78", "BC"}, {"79", "B6"}, {"7A", "DA"}, {"7B", "21"}, {"7C", "10"}, {"7D", "FF"}, {"7E", "F3"}, {"7F", "D2"},
+        {"80", "CD"}, {"81", "0C"}, {"82", "13"}, {"83", "EC"}, {"84", "5F"}, {"85", "97"}, {"86", "44"}, {"87", "17"},
+        {"88", "C4"}, {"89", "A7"}, {"8A", "7E"}, {"8B", "3D"}, {"8C", "64"}, {"8D", "5D"}, {"8E", "19"}, {"8F", "73"},
+        {"90", "60"}, {"91", "81"}, {"92", "4F"}, {"93", "DC"}, {"94", "22"}, {"95", "2A"}, {"96", "90"}, {"97", "88"},
+        {"98", "46"}, {"99", "EE"}, {"9A", "B8"}, {"9B", "14"}, {"9C", "DE"}, {"9D", "5E"}, {"9E", "0B"}, {"9F", "DB"},
+        {"A0", "E0"}, {"A1", "32"}, {"A2", "3A"}, {"A3", "0A"}, {"A4", "49"}, {"A5", "06"}, {"A6", "24"}, {"A7", "5C"},
+        {"A8", "C2"}, {"A9", "D3"}, {"AA", "AC"}, {"AB", "62"}, {"AC", "91"}, {"AD", "95"}, {"AE", "E4"}, {"AF", "79"},
+        {"B0", "E7"}, {"B1", "C8"}, {"B2", "37"}, {"B3", "6D"}, {"B4", "8D"}, {"B5", "D5"}, {"B6", "4E"}, {"B7", "A9"},
+        {"B8", "6C"}, {"B9", "56"}, {"BA", "F4"}, {"BB", "EA"}, {"BC", "65"}, {"BD", "7A"}, {"BE", "AE"}, {"BF", "08"},
+        {"C0", "BA"}, {"C1", "78"}, {"C2", "25"}, {"C3", "2E"}, {"C4", "1C"}, {"C5", "A6"}, {"C6", "B4"}, {"C7", "C6"},
+        {"C8", "E8"}, {"C9", "DD"}, {"CA", "74"}, {"CB", "1F"}, {"CC", "4B"}, {"CD", "BD"}, {"CE", "8B"}, {"CF", "8A"},
+        {"D0", "70"}, {"D1", "3E"}, {"D2", "B5"}, {"D3", "66"}, {"D4", "48"}, {"D5", "03"}, {"D6", "F6"}, {"D7", "0E"},
+        {"D8", "61"}, {"D9", "35"}, {"DA", "57"}, {"DB", "B9"}, {"DC", "86"}, {"DD", "C1"}, {"DE", "1D"}, {"DF", "9E"},
+        {"E0", "E1"}, {"E1", "F8"}, {"E2", "98"}, {"E3", "11"}, {"E4", "69"}, {"E5", "D9"}, {"E6", "8E"}, {"E7", "94"},
+        {"E8", "9B"}, {"E9", "1E"}, {"EA", "87"}, {"EB", "E9"}, {"EC", "CE"}, {"ED", "55"}, {"EE", "28"}, {"EF", "DF"},
+        {"F0", "8C"}, {"F1", "A1"}, {"F2", "89"}, {"F3", "0D"}, {"F4", "BF"}, {"F5", "E6"}, {"F6", "42"}, {"F7", "68"},
+        {"F8", "41"}, {"F9", "99"}, {"FA", "2D"}, {"FB", "0F"}, {"FC", "B0"}, {"FD", "54"}, {"FE", "BB"}, {"FF", "16"}
+    };
+
+
+            if (inverse)
             {
-                hexa = hexa.Substring(2);
+
+                Dictionary<string, string> inverseSBox = sBox.ToDictionary(kv => kv.Value, kv => kv.Key);
+
+
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        string hexValue = text[i, j];
+                        text[i, j] = inverseSBox.ContainsKey(hexValue) ? inverseSBox[hexValue] : hexValue;
+                    }
+                }
             }
-            for (int i = 0; i < hexa.Length; i += 2)
-            { 
-                string subHex = hexa[i].ToString() + hexa[i + 1].ToString();
-                int hexIndex= Convert.ToInt32(subHex, 16);
-                result += subByte_Sbox[hexIndex];
+            else
+            {
+
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        string hexValue = text[i, j];
+                        text[i, j] = sBox.ContainsKey(hexValue) ? sBox[hexValue] : hexValue;
+                    }
+                }
             }
-            return result;
+
+            return text;
         }
-        public static string subByte_inverse(string hexa)
-        {
-            string result = "";
-            string[] subByte_Sbox_inverse = {
-                "52", "09", "6a", "d5", "30", "36", "a5", "38", "bf", "40", "a3", "9e", "81", "f3", "d7", "fb",
-                "7c", "e3", "39", "82", "9b", "2f", "ff", "87", "34", "8e", "43", "44", "c4", "de", "e9", "cb",
-                "54", "7b", "94", "32", "a6", "c2", "23", "3d", "ee", "4c", "95", "0b", "42", "fa", "c3", "4e",
-                "08", "2e", "a1", "66", "28", "d9", "24", "b2", "76", "5b", "a2", "49", "6d", "8b", "d1", "25",
-                "72", "f8", "f6", "64", "86", "68", "98", "16", "d4", "a4", "5c", "cc", "5d", "65", "b6", "92",
-                "6c", "70", "48", "50", "fd", "ed", "b9", "da", "5e", "15", "46", "57", "a7", "8d", "9d", "84",
-                "90", "d8", "ab", "00", "8c", "bc", "d3", "0a", "f7", "e4", "58", "05", "b8", "b3", "45", "06",
-                "d0", "2c", "1e", "8f", "ca", "3f", "0f", "02", "c1", "af", "bd", "03", "01", "13", "8a", "6b",
-                "3a", "91", "11", "41", "4f", "67", "dc", "ea", "97", "f2", "cf", "ce", "f0", "b4", "e6", "73",
-                "96", "ac", "74", "22", "e7", "ad", "35", "85", "e2", "f9", "37", "e8", "1c", "75", "df", "6e",
-                "47", "f1", "1a", "71", "1d", "29", "c5", "89", "6f", "b7", "62", "0e", "aa", "18", "be", "1b",
-                "fc", "56", "3e", "4b", "c6", "d2", "79", "20", "9a", "db", "c0", "fe", "78", "cd", "5a", "f4",
-                "1f", "dd", "a8", "33", "88", "07", "c7", "31", "b1", "12", "10", "59", "27", "80", "ec", "5f",
-                "60", "51", "7f", "a9", "19", "b5", "4a", "0d", "2d", "e5", "7a", "9f", "93", "c9", "9c", "ef",
-                "a0", "e0", "3b", "4d", "ae", "2a", "f5", "b0", "c8", "eb", "bb", "3c", "83", "53", "99", "61",
-                "17", "2b", "04", "7e", "ba", "77", "d6", "26", "e1", "69", "14", "63", "55", "21", "0c", "7d",
-            };
-            if (hexa.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-            {
-                hexa = hexa.Substring(2);
-            }
-            for (int i = 0; i < hexa.Length; i += 2)
-            {
-                string subHex = hexa[i].ToString() + hexa[i + 1].ToString();
-                int hexIndex = Convert.ToInt32(subHex, 16);
-                result += subByte_Sbox_inverse[hexIndex];
-            }
-            return result;
-        }
-          public override string Decrypt(string cipherText, string key)
-   {
-
-       string[,] state = CreateStateMatrix(cipherText);
-       string[,] keyMatrix = CreateStateMatrix(key);
-       state = AddRoundKey(state, keyMatrix);
-       //cipherText = HexaToBinary(cipherText);
-       //key = HexaToBinary(key);
-       for (int round = 9; round >= 0; round--)
-       {
-
-
-           for (int i = 0; i < 4; i++)
-           {
-               for (int j = 0; j < 4; j++)
-               {
-                   state[i, j] = subByte_inverse(state[i, j]);
-               }
-           }
-           state = shiftRowsinv(state);
-           state = mixColumns(state, true);
-           state = AddRoundKey(state, keyMatrix);
-
-       }
-
-       for (int i = 0; i < 4; i++)
-       {
-           for (int j = 0; j < 4; j++)
-           {
-               state[i, j] = subByte_inverse(state[i, j]);
-           }
-       }
-       state = shiftRowsinv(state);
-       state = AddRoundKey(state, keyMatrix);
-
-      
-       string plainText = "";
-       for (int i = 0; i < 4; i++)
-       {
-           for (int j = 0; j < 4; j++)
-           {
-               plainText += state[j, i];
-           }
-       }
-
-       return plainText;
-
-       //throw new NotImplementedException();
-   }
-
-   public override string Encrypt(string plainText, string key)
-   {
-       //plainText = HexaToBinary(plainText);
-       //key = HexaToBinary(key);
-       string[,] stateMatrix = CreateStateMatrix(plainText);
-       string[,] keyMatrix = CreateStateMatrix(key);
-       stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
-
-       for (int round = 1; round <= 9; round++)
-       {
-           for (int i = 0; i < 4; i++)
-           {
-               for (int j = 0; j < 4; j++)
-               {
-                   stateMatrix[i, j] = subByte(stateMatrix[i, j]);
-
-               }
-           }
-           stateMatrix = shiftRows(stateMatrix);
-           stateMatrix = mixColumns(stateMatrix, false);
-           stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
-
-       }
-
-       for (int i = 0; i < 4; i++)
-       {
-           for (int j = 0; j < 4; j++)
-           {
-               stateMatrix[i, j] = subByte(stateMatrix[i, j]);
-           }
-
-       }
-       stateMatrix = shiftRows(stateMatrix);
-       stateMatrix = AddRoundKey(stateMatrix, keyMatrix);
-
-       string cipherText = "";
-       for (int i = 0; i < 4; i++)
-       {
-           for (int j = 0; j < 4; j++)
-           {
-               cipherText += stateMatrix[j, i];
-
-           }
-       }
-
-       return cipherText;
-       //throw new NotImplementedException();
-   }
-
         public string[,] CreateStateMatrix(string text)
         {
             int idx = 0;
@@ -278,89 +380,194 @@ namespace SecurityLibrary.AES
 
             return stateMatrix;
         }
-        public string XOR(string text1, string text2)
+        string XOR(string bin1, string bin2)
         {
             string result = "";
-            for (int i = 0; i < text1.Length; i++)
+            for (int i = 0; i < bin1.Length; i++)
             {
-                result += (text1[i] == text2[i]) ? "0" : "1";
+                if (bin1[i] == bin2[i])
+                {
+                    result += "0";
+                }
+                else
+                {
+                    result += "1";
+                }
             }
             return result;
         }
-        
-        public string[,] AddRoundKey(string[,] state, string[,] key)
+        string[,] AddRoundKey(string[,] text, string[,] key)
         {
             string[,] result = new string[4, 4];
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    string stateBinary = HexaToBinary(state[i, j]);
-                    string keyBinary = HexaToBinary(key[i, j]);
-                    result[i, j] = BinaryToHexa(XOR(stateBinary, keyBinary));
+                    result[j, i] = XOR(HexaToBinary(text[j, i]), HexaToBinary(key[j, i]));
                 }
             }
-        
-            return result;
-         }
 
-         public static Dictionary<string, string> hexMap = new Dictionary<string, string>
-         {
-             {"0", "0000" }, {"1", "0001"} ,{"2", "0010"}, {"3", "0011"},
-             {"4", "0100" }, {"5", "0101"} ,{"6", "0110"}, {"7", "0111"},
-             {"8", "1000" }, {"9", "1001"} ,{"A", "1010"}, {"B", "1011"},
-             {"C", "1100" }, {"D", "1101"} ,{"E", "1110"}, {"F", "1111"}
-         };
-        
-         public string HexaToBinary(string hexa)
-         {
-             string binary = "";
-        
-             // If the hex string has "0x" prefix, skip it
-             int startIndex = hexa.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? 2 : 0;
-        
-             for (int i = startIndex; i < hexa.Length; i++)
-             {
-                 string hexIndex = hexa[i].ToString().ToUpper(); // Ensure uppercase for dictionary lookup
-                 if (hexMap.ContainsKey(hexIndex))
-                 {
-                     binary += hexMap[hexIndex];
-                 }
-        
-             }
-             return binary;
-         }
-         
-         public static Dictionary<string, string> binaryMap = new Dictionary<string, string>
-         {
-             {"0000", "0"}, {"0001", "1"}, {"0010", "2"}, {"0011", "3"},
-             {"0100", "4"}, {"0101", "5"}, {"0110", "6"}, {"0111", "7"},
-             {"1000", "8"}, {"1001", "9"}, {"1010", "A"}, {"1011", "B"},
-             {"1100", "C"}, {"1101", "D"}, {"1110", "E"}, {"1111", "F"}
-         };
-        
-         public string BinaryToHexa(string binary)
-         {
-             string hexa = "";
-        
-             if (binary.Length % 4 != 0)
-             {
-                 int add = 4 - (binary.Length % 4);
-                 binary = new string('0', add) + binary; // Add leading zeros
-             }
-        
-             for (int i = 0; i < binary.Length; i += 4)
-             {
-                 string binary4Chunk = binary.Substring(i, 4);//Take 4 bits each time
-        
-                 if (binaryMap.ContainsKey(binary4Chunk))
-                 {
-                     hexa += binaryMap[binary4Chunk];
-                 }
-             }
-        
-             return hexa;
-         }
-        
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    result[j, i] = BinaryToHexa(result[j, i]);
+                }
+            }
+
+            return result;
+
+        }
+        string BinaryToHexa(string binary)
+        {
+
+            string hex = "";
+            int size = binary.Length;
+            for (int i = 0; i < size; i += 4)
+            {
+                string temp = binary.Substring(i, 4);
+                switch (temp)
+                {
+                    case "0000":
+                        hex += "0";
+                        break;
+                    case "0001":
+                        hex += "1";
+                        break;
+                    case "0010":
+                        hex += "2";
+                        break;
+                    case "0011":
+                        hex += "3";
+                        break;
+                    case "0100":
+                        hex += "4";
+                        break;
+                    case "0101":
+                        hex += "5";
+                        break;
+                    case "0110":
+                        hex += "6";
+                        break;
+                    case "0111":
+                        hex += "7";
+                        break;
+                    case "1000":
+                        hex += "8";
+                        break;
+                    case "1001":
+                        hex += "9";
+                        break;
+                    case "1010":
+                        hex += "A";
+                        break;
+                    case "1011":
+                        hex += "B";
+                        break;
+                    case "1100":
+                        hex += "C";
+                        break;
+                    case "1101":
+                        hex += "D";
+                        break;
+                    case "1110":
+                        hex += "E";
+                        break;
+                    case "1111":
+                        hex += "F";
+                        break;
+                }
+            }
+            return hex;
+
+        }
+        string HexaToBinary(string hex)
+        {
+            string binary = "";
+            int size = hex.Length;
+            for (int i = 0; i < size; i++)
+            {
+                switch (hex[i])
+                {
+                    case '0':
+                        binary += "0000";
+                        break;
+                    case '1':
+                        binary += "0001";
+                        break;
+                    case '2':
+                        binary += "0010";
+                        break;
+                    case '3':
+                        binary += "0011";
+                        break;
+                    case '4':
+                        binary += "0100";
+                        break;
+                    case '5':
+                        binary += "0101";
+                        break;
+                    case '6':
+                        binary += "0110";
+                        break;
+                    case '7':
+                        binary += "0111";
+                        break;
+                    case '8':
+                        binary += "1000";
+                        break;
+                    case '9':
+                        binary += "1001";
+                        break;
+                    case 'A':
+                        binary += "1010";
+                        break;
+                    case 'B':
+                        binary += "1011";
+                        break;
+                    case 'C':
+                        binary += "1100";
+                        break;
+                    case 'D':
+                        binary += "1101";
+                        break;
+                    case 'E':
+                        binary += "1110";
+                        break;
+                    case 'F':
+                        binary += "1111";
+                        break;
+                }
+            }
+            return binary;
+        }
+        public static string[,] shiftRows(string[,] orgstate)
+        {
+            string[,] Shiftstate = new string[4, 4];
+            for (int row = 0; row < 4; row++)
+            {
+                for (int col = 0; col < 4; col++)
+                {
+                    Shiftstate[row, col] = orgstate[row, (col + row) % 4];
+                }
+            }
+
+            return Shiftstate;
+        }
+        public static string[,] shiftRowsinv(string[,] Shifted)
+        {
+            string[,] invShifted = new string[4, 4];
+
+            for (int row = 0; row < 4; row++)
+            {
+                for (int col = 0; col < 4; col++)
+                {
+                    invShifted[row, col] = Shifted[row, (col - row + 4) % 4];
+                }
+            }
+
+            return invShifted;
+        }
     }
 }
