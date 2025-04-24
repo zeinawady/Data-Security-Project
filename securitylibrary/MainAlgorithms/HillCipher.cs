@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +10,8 @@ namespace SecurityLibrary
     /// <summary>
     /// The List<int> is row based. Which means that the key is given in row based manner.
     /// </summary>
-    public class HillCipher :  ICryptographicTechnique<List<int>, List<int>>
+    public class HillCipher : ICryptographicTechnique<List<int>, List<int>>
     {
-
 
         public int getDeterminant(List<int> matrix)
         {
@@ -317,7 +317,32 @@ namespace SecurityLibrary
         public List<int> Decrypt(List<int> cipherText, List<int> key)
         {
 
-            throw new NotImplementedException();
+            int determinant = getDeterminant(key);
+            int gcd = GCD(determinant, 26);
+            if (determinant == 0 || gcd != 1)
+            {
+                throw new NotImplementedException();
+            }
+
+            int bvalue = GetbValue(determinant);
+
+            List<int> keyInverse = new List<int> { };
+
+            int size = key.Count;
+
+            switch (size)
+            {
+                case 4:
+                    keyInverse = Inverse2by2(key, bvalue);
+                    break;
+                case 9:
+                    keyInverse = Inverse3by3(key, bvalue);
+                    break;
+                default:
+                    throw new Exception("Can't decrypt the passed matrix");
+            }
+            List<int> plain = listMultiplication(cipherText, keyInverse);
+            return plain;
 
         }
 
@@ -378,10 +403,65 @@ namespace SecurityLibrary
                 throw new InvalidAnlysisException();
         }
 
+
         public List<int> Analyse3By3Key(List<int> plainText, List<int> cipherText)
         {
-            throw new NotImplementedException();
+
+            //Validating the passed matrices size
+            if (plainText.Count != 9 || cipherText.Count != 9)
+            {
+                throw new Exception("Can't get the key. Wrong size matrices");
+            }
+
+            //Validating the passed letter values
+            for (int i = 0; i < cipherText.Count; i++)
+            {
+                if (cipherText.ElementAt(i) < 0 || cipherText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Cipher text");
+                }
+            }
+
+            for (int i = 0; i < plainText.Count; i++)
+            {
+                if (plainText.ElementAt(i) < 0 || plainText.ElementAt(i) >= 26)
+                {
+                    throw new Exception("Invalid Plain text");
+                }
+            }
+
+            int determinant3 = getDeterminant(plainText);
+
+            int gcd = GCD(determinant3, 26); //Insuring that the determinant and 26 have no common divisors but 1
+
+
+            if (gcd != 1 || determinant3 == 0)
+            {
+                throw new InvalidAnlysisException();
+            }
+
+            int bvalue = GetbValue(determinant3);
+
+            if (bvalue == -1)
+            {
+                throw new InvalidAnlysisException();
+            }
+
+
+
+            List<int> plainInverse = Inverse3by3(plainText, bvalue);
+            //Transposing the cipher matrix
+            int A = cipherText[0], B = cipherText[1], C = cipherText[2],
+                D = cipherText[3], E = cipherText[4], F = cipherText[5],
+                G = cipherText[6], H = cipherText[7], I = cipherText[8];
+            List<int> cipherTranspose = new List<int> { A, D, G,
+                                                        B, E, H,
+                                                        C, F, I };
+            List<int> key3by3 = listMultiplication(cipherTranspose, plainInverse);
+            return key3by3;
+            //throw new NotImplementedException();
         }
+
 
     }
 }

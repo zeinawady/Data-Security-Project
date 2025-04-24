@@ -3,7 +3,39 @@
   "WorkspaceRootPath": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\aes\\aes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\mainalgorithms\\monoalphabetic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\monoalphabetic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\mainalgorithms\\autokeyvigenere.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\autokeyvigenere.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\mainalgorithms\\repeatingkeyvigenere.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\repeatingkeyvigenere.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\columnar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\columnar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\des\\tripledes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\des\\tripledes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|d:\\all projects\\temporary folders\\ms3\\data-security-project\\securitylibrary\\des\\des.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\des\\des.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\aes\\aes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\aes\\aes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -15,20 +47,12 @@
       "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\aes\\extendedeuclid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\hillcipher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\railfence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\railfence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4638FC66-5518-485D-A541-D0A6044730B0}|SecurityPackageTest\\SecurityPackageTest.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitypackagetest\\railfencetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4638FC66-5518-485D-A541-D0A6044730B0}|SecurityPackageTest\\SecurityPackageTest.csproj|solutionrelative:securitypackagetest\\railfencetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64AFBAE4-208F-4F5D-B9F4-CCA2E71F36E4}|SecurityLibrary\\SecurityLibrary.csproj|solutionrelative:securitylibrary\\mainalgorithms\\ceaser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,24 +62,25 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "Ceaser.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Ceaser.cs",
               "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\Ceaser.cs",
               "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Ceaser.cs",
               "RelativeToolTip": "securitylibrary\\MainAlgorithms\\Ceaser.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEoAAAAFAAAA",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-01T23:48:34.646Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "RailFence.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\RailFence.cs",
               "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\RailFence.cs",
@@ -65,6 +90,58 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-01T22:27:53.625Z",
               "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Monoalphabetic.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Monoalphabetic.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\Monoalphabetic.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Monoalphabetic.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\Monoalphabetic.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:45:22.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RepeatingKeyVigenere.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\RepeatingKeyVigenere.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\RepeatingKeyVigenere.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\RepeatingKeyVigenere.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\RepeatingKeyVigenere.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAACkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:43:11.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TripleDES.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\DES\\TripleDES.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\DES\\TripleDES.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\DES\\TripleDES.cs",
+              "RelativeToolTip": "securitylibrary\\DES\\TripleDES.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:39:49.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DES.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\DES\\DES.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\DES\\DES.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\DES\\DES.cs",
+              "RelativeToolTip": "securitylibrary\\DES\\DES.cs",
+              "ViewState": "AgIAAD4BAAAAAAAAAAAIwFYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:38:54.397Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -85,6 +162,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AutokeyVigenere.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\AutokeyVigenere.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\AutokeyVigenere.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\AutokeyVigenere.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\AutokeyVigenere.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:36:18.772Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Columnar.cs",
+              "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Columnar.cs",
+              "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\Columnar.cs",
+              "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\Columnar.cs",
+              "RelativeToolTip": "securitylibrary\\MainAlgorithms\\Columnar.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAAAMUAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T13:30:52.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "AESTest.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitypackagetest\\AESTest.cs",
               "RelativeDocumentMoniker": "securitypackagetest\\AESTest.cs",
@@ -92,12 +195,11 @@
               "RelativeToolTip": "securitypackagetest\\AESTest.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAnwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-19T20:01:00.797Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-19T20:01:00.797Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "ExtendedEuclid.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\AES\\ExtendedEuclid.cs",
               "RelativeDocumentMoniker": "securitylibrary\\AES\\ExtendedEuclid.cs",
@@ -109,32 +211,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 8,
               "Title": "AES.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\AES\\AES.cs",
               "RelativeDocumentMoniker": "securitylibrary\\AES\\AES.cs",
               "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\AES\\AES.cs",
               "RelativeToolTip": "securitylibrary\\AES\\AES.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAEAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAH0BAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-17T07:43:25.887Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "HillCipher.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\HillCipher.cs",
               "RelativeDocumentMoniker": "securitylibrary\\MainAlgorithms\\HillCipher.cs",
               "ToolTip": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitylibrary\\MainAlgorithms\\HillCipher.cs",
               "RelativeToolTip": "securitylibrary\\MainAlgorithms\\HillCipher.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAAAywEEBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAALoBAAAAAAAAAAAIwMEBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-07T02:00:19.359Z"
+              "WhenOpened": "2025-03-07T02:00:19.359Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "RailFenceTest.cs",
               "DocumentMoniker": "D:\\All projects\\Temporary Folders\\MS3\\Data-Security-Project\\securitypackagetest\\RailFenceTest.cs",
               "RelativeDocumentMoniker": "securitypackagetest\\RailFenceTest.cs",
