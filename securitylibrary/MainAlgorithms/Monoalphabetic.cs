@@ -10,17 +10,69 @@ namespace SecurityLibrary
     {
         public string Analyse(string plainText, string cipherText)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            cipherText = cipherText.ToLower();
+            string Alpha = "abcdefghijklmnopqrstuvwxyz";
+            var map = new Dictionary<char, char>();
+            // Add letters to map without repeate
+            for (int i = 0; i < plainText.Length; i++)
+            {
+                if (!map.ContainsKey(plainText[i]))
+                {
+                    map.Add(plainText[i], cipherText[i]);
+                }
+            }
+            //  letters missing
+            string missingalpha = "";
+            string missingcipher = "";
+            for (int i = 0; i < 26; i++)
+            {
+                if (!map.ContainsKey((char)('a' + i)))
+                {
+                    missingalpha += (char)('a' + i);
+                }
+                if (!map.ContainsValue((char)('a' + i)))
+                {
+                    missingcipher += (char)('a' + i);
+                }
+            }
+
+            for (int i = 0; i < missingalpha.Length; i++)
+            {
+                map.Add(missingalpha[i], missingcipher[i]);
+            }
+
+            var sort = map.OrderBy(x => x.Key);
+            string key = "";
+            foreach (var item in sort)
+            {
+                key += item.Value;
+            }
+            return key;
         }
 
         public string Decrypt(string cipherText, string key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            cipherText = cipherText.ToLower();
+            string Alpha = "abcdefghijklmnopqrstuvwxyz";
+            string dec = "";
+            for (int i = 0; i < cipherText.Length; i++)
+            {
+                dec += Alpha[key.IndexOf(cipherText[i])];
+            }
+            return dec;
         }
 
         public string Encrypt(string plainText, string key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            string enc = "";
+            for (int i = 0; i < plainText.Length; i++)
+            {
+                enc += key[plainText[i] - 'a'];
+            }
+            return enc.ToUpper();
         }
 
         /// <summary>
@@ -56,7 +108,65 @@ namespace SecurityLibrary
         /// <returns>Plain text</returns>
         public string AnalyseUsingCharFrequency(string cipher)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            string Freq = "etaoinsrhldcumfpgwybvkxjqz";
+            cipher = cipher.ToLower();
+            var map = new Dictionary<char, int>(); // map to know number of each letter
+            // calculate numbers of letters
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                if (map.ContainsKey(cipher[i]))
+                {
+                    map[cipher[i]]++;
+                }
+                else
+                {
+                    map.Add(cipher[i], 1);
+                }
+
+            }
+
+            var sort = map.OrderByDescending(x => x.Value).ThenBy(x => x.Key);
+            var ToPlan = new Dictionary<char, char>();
+            int index = 0;
+            // make each letter  with freq
+            foreach (var item in sort)
+            {
+                if (!ToPlan.ContainsKey(item.Key))
+                {
+                    ToPlan.Add(item.Key, Freq[index]);
+                    index++;
+                }
+
+            }
+
+            /*string missingKey = "";
+            string missingValue = "";
+            for (int i = 0; i < 26; i++)
+            {
+                if (!ToPlan.ContainsKey((char)('a' + i)))
+                {
+                    missingKey += (char)('a' + i);
+                }
+                if (!ToPlan.ContainsValue((char)('a' + i)))
+                {
+                    missingValue += (char)('a' + i);
+                }
+            }
+            
+            for (int i = 0; i < missingKey.Length; i++)
+            {
+                ToPlan.Add(missingKey[i], missingValue[i]);
+            }*/
+
+
+            string plainText = "";
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                plainText += ToPlan[cipher[i]];
+            }
+
+            return plainText;
         }
     }
 }

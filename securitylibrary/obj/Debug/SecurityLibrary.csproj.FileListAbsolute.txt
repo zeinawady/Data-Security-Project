@@ -24,3 +24,9 @@ D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\Securit
 D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 D:\VS-Community-Projects\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+D:\All projects\Temporary Folders\MS3\Data-Security-Project\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
